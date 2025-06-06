@@ -1,26 +1,261 @@
 @import "tailwindcss";
+@import "tw-animate-css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
+  --color-brand-red: var(--brand-red);
+  --color-brand-red-50: var(--brand-red-50);
+  --color-brand-red-100: var(--brand-red-100);
+  --color-brand-red-200: var(--brand-red-200);
+  --color-brand-red-300: var(--brand-red-300);
+  --color-brand-red-400: var(--brand-red-400);
+  --color-brand-red-500: var(--brand-red-500);
+  --color-brand-red-600: var(--brand-red-600);
+  --color-brand-red-700: var(--brand-red-700);
+  --color-brand-red-800: var(--brand-red-800);
+  --color-brand-red-900: var(--brand-red-900);
+  --color-brand-red-950: var(--brand-red-950);
+
+  --color-brand-night: var(--brand-night);
+  --color-brand-night-50: var(--brand-night-50);
+  --color-brand-night-100: var(--brand-night-100);
+  --color-brand-night-200: var(--brand-night-200);
+  --color-brand-night-300: var(--brand-night-300);
+  --color-brand-night-400: var(--brand-night-400);
+  --color-brand-night-500: var(--brand-night-500);
+  --color-brand-night-600: var(--brand-night-600);
+  --color-brand-night-700: var(--brand-night-700);
+  --color-brand-night-800: var(--brand-night-800);
+  --color-brand-night-900: var(--brand-night-900);
+  --color-brand-night-950: var(--brand-night-950);
+
+  --color-brand-seashell: var(--brand-seashell);
+  --color-brand-seashell-25: var(--brand-seashell-25);
+  --color-brand-seashell-50: var(--brand-seashell-50);
+  --color-brand-seashell-100: var(--brand-seashell-100);
+  --color-brand-seashell-200: var(--brand-seashell-200);
+  --color-brand-seashell-300: var(--brand-seashell-300);
+  --color-brand-seashell-400: var(--brand-seashell-400);
+  --color-brand-seashell-500: var(--brand-seashell-500);
+  --color-brand-seashell-600: var(--brand-seashell-600);
+  --color-brand-seashell-700: var(--brand-seashell-700);
+  --color-brand-seashell-800: var(--brand-seashell-800);
+  --color-brand-seashell-900: var(--brand-seashell-900);
+  --color-brand-seashell-950: var(--brand-seashell-950);
+
+  --color-brand-ocean: var(--brand-ocean);
+  --color-brand-ocean-25: var(--brand-ocean-25);
+  --color-brand-ocean-50: var(--brand-ocean-50);
+  --color-brand-ocean-100: var(--brand-ocean-100);
+  --color-brand-ocean-200: var(--brand-ocean-200);
+  --color-brand-ocean-300: var(--brand-ocean-300);
+  --color-brand-ocean-400: var(--brand-ocean-400);
+  --color-brand-ocean-500: var(--brand-ocean-500);
+  --color-brand-ocean-600: var(--brand-ocean-600);
+  --color-brand-ocean-700: var(--brand-ocean-700);
+  --color-brand-ocean-800: var(--brand-ocean-800);
+  --color-brand-ocean-900: var(--brand-ocean-900);
+  --color-brand-ocean-950: var(--brand-ocean-950);
+
+  --color-brand-glow: var(--brand-glow);
+  --color-brand-glow-25: var(--brand-glow-25);
+  --color-brand-glow-50: var(--brand-glow-50);
+  --color-brand-glow-100: var(--brand-glow-100);
+  --color-brand-glow-200: var(--brand-glow-200);
+  --color-brand-glow-300: var(--brand-glow-300);
+  --color-brand-glow-400: var(--brand-glow-400);
+  --color-brand-glow-500: var(--brand-glow-500);
+  --color-brand-glow-600: var(--brand-glow-600);
+  --color-brand-glow-700: var(--brand-glow-700);
+  --color-brand-glow-800: var(--brand-glow-800);
+  --color-brand-glow-900: var(--brand-glow-900);
+  --color-brand-glow-950: var(--brand-glow-950);
+
   --color-background: var(--background);
   --color-foreground: var(--foreground);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  --brand-red-500: #dd4c68;
+  /* You can add the rest of your --brand-* variables here manually or let me do it if you've got the values ready */
+  --brand-red: #d7002b;
+  --brand-red-25: #fdf9fa;
+  --brand-red-50: #fdf2f4;
+  --brand-red-100: #fce7ea;
+  --brand-red-200: #f8cdd4;
+  --brand-red-300: #f2a8b4;
+  --brand-red-400: #ea7a8c;
+  --brand-red-500: #dd4c68;
+  --brand-red-600: #d7002b;
+  --brand-red-700: #b8002a;
+  --brand-red-800: #9a0028;
+  --brand-red-900: #7c0021;
+  --brand-red-950: #5e001a;
+
+  --brand-night: #0e0e11;
+  --brand-night-50: #f7f7f8;
+  --brand-night-100: #efefef;
+  --brand-night-200: #dfdfe0;
+  --brand-night-300: #cfcfd1;
+  --brand-night-400: #afafb2;
+  --brand-night-500: #8f8f93;
+  --brand-night-600: #6f6f74;
+  --brand-night-700: #4f4f55;
+  --brand-night-800: #2f2f36;
+  --brand-night-900: #1f1f26;
+  --brand-night-950: #0e0e11;
+
+  --brand-seashell: #fff9f5;
+  --brand-seashell-25: #fffcfa;
+  --brand-seashell-50: #fff9f5;
+  --brand-seashell-100: #fff4ed;
+  --brand-seashell-200: #ffe9db;
+  --brand-seashell-300: #ffdec9;
+  --brand-seashell-400: #ffd3b7;
+  --brand-seashell-500: #ffc8a5;
+  --brand-seashell-600: #ffbd93;
+  --brand-seashell-700: #ffb281;
+  --brand-seashell-800: #ffa76f;
+  --brand-seashell-900: #ff9c5d;
+  --brand-seashell-950: #ff914b;
+
+  --brand-ocean: #407f7f;
+  --brand-ocean-25: #f8fafa;
+  --brand-ocean-50: #f0f7f7;
+  --brand-ocean-100: #e1efef;
+  --brand-ocean-200: #c3dfdf;
+  --brand-ocean-300: #a5cfcf;
+  --brand-ocean-400: #87bfbf;
+  --brand-ocean-500: #69afaf;
+  --brand-ocean-600: #407f7f;
+  --brand-ocean-700: #366b6b;
+  --brand-ocean-800: #2c5757;
+  --brand-ocean-900: #224343;
+  --brand-ocean-950: #182f2f;
+
+  --brand-glow: #ffe393;
+  --brand-glow-25: #fffef8;
+  --brand-glow-50: #fffdf5;
+  --brand-glow-100: #fffbeb;
+  --brand-glow-200: #fff7d7;
+  --brand-glow-300: #fff3c3;
+  --brand-glow-400: #ffefaf;
+  --brand-glow-500: #ffeb9b;
+  --brand-glow-600: #ffe393;
+  --brand-glow-700: #ffdf87;
+  --brand-glow-800: #ffdb7b;
+  --brand-glow-900: #ffd76f;
+  --brand-glow-950: #ffd363;
+
+  --radius: 0.625rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.141 0.005 285.823);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.141 0.005 285.823);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.141 0.005 285.823);
+  --primary: oklch(0.21 0.006 285.885);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.967 0.001 286.375);
+  --secondary-foreground: oklch(0.21 0.006 285.885);
+  --muted: oklch(0.967 0.001 286.375);
+  --muted-foreground: oklch(0.552 0.016 285.938);
+  --accent: oklch(0.967 0.001 286.375);
+  --accent-foreground: oklch(0.21 0.006 285.885);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.92 0.004 286.32);
+  --input: oklch(0.92 0.004 286.32);
+  --ring: oklch(0.705 0.015 286.067);
+  --chart-1: oklch(0.646 0.222 41.116);
+  --chart-2: oklch(0.6 0.118 184.704);
+  --chart-3: oklch(0.398 0.07 227.392);
+  --chart-4: oklch(0.828 0.189 84.429);
+  --chart-5: oklch(0.769 0.188 70.08);
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.141 0.005 285.823);
+  --sidebar-primary: oklch(0.21 0.006 285.885);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.967 0.001 286.375);
+  --sidebar-accent-foreground: oklch(0.21 0.006 285.885);
+  --sidebar-border: oklch(0.92 0.004 286.32);
+  --sidebar-ring: oklch(0.705 0.015 286.067);
+}
+
+.dark {
+  --background: oklch(0.141 0.005 285.823);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.21 0.006 285.885);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.21 0.006 285.885);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.92 0.004 286.32);
+  --primary-foreground: oklch(0.21 0.006 285.885);
+  --secondary: oklch(0.274 0.006 286.033);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.274 0.006 286.033);
+  --muted-foreground: oklch(0.705 0.015 286.067);
+  --accent: oklch(0.274 0.006 286.033);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.552 0.016 285.938);
+  --chart-1: oklch(0.488 0.243 264.376);
+  --chart-2: oklch(0.696 0.17 162.48);
+  --chart-3: oklch(0.769 0.188 70.08);
+  --chart-4: oklch(0.627 0.265 303.9);
+  --chart-5: oklch(0.645 0.246 16.439);
+  --sidebar: oklch(0.21 0.006 285.885);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.274 0.006 286.033);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.552 0.016 285.938);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
   }
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  body {
+    @apply bg-background text-foreground;
+  }
 }
