@@ -36,12 +36,6 @@ export default async function EditPackageRulePage({ params }: PageProps) {
 
     return (
       <div className="space-y-6">
-        <div>
-          <h1 className="text-3xl font-bold">Create Package Rule</h1>
-          <p className="text-muted-foreground">
-            Configure a new travel package rule
-          </p>
-        </div>
         <PackageRuleForm
           referenceData={{
             ports,

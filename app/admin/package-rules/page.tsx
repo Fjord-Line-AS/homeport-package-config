@@ -22,7 +22,7 @@ async function PackageRulesList() {
       {rules.map((rule, index) => (
         <Card
           key={rule._id}
-          className="group hover:shadow-brand-lg transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.02]"
+          className="group hover:shadow-brand-lg transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002]"
           style={{ animationDelay: `${index * 100}ms` }}
         >
           <div className="absolute inset-0 bg-gradient-to-r from-brand-seashell-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -58,7 +58,7 @@ async function PackageRulesList() {
                 rule.bundlePackageRules.cabinInfo.cabins.length > 0 ? (
                   <Badge
                     variant="default"
-                    className="bg-gradient-to-r from-brand-glow-500 to-brand-glow-600 text-white border-0 shadow-sm"
+                    className="bg-gradient-to-r from-brand-glow-800 to-brand-glow-900 text-white border-0 shadow-sm"
                   >
                     ✓ Cabins Configured
                   </Badge>
@@ -129,10 +129,10 @@ async function PackageRulesList() {
 
 export default function PackageRulesPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-seashell-100">
+    <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-night-100">
       {/* Beautiful Header */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-red-600 via-brand-red-500 to-brand-ocean-500 opacity-90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-red-600  to-brand-red-700 opacity-90" />
         <div className="absolute inset-0 opacity-10">
           <div className="absolute inset-0 bg-gradient-to-br from-transparent via-white/5 to-transparent" />
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px]" />

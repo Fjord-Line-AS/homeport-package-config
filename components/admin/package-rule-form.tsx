@@ -390,7 +390,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-seashell-100">
       {/* Subtle Header with Toned Down Gradient */}
       <div className="relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-r from-brand-red-600/80 to-brand-ocean-500/60" />
+        <div className="absolute inset-0 bg-gradient-to-r from-brand-ocean-600 to-brand-ocean-500" />
         <div className="absolute inset-0 bg-white/10" />
 
         <div className="relative z-10 p-8">
@@ -639,7 +639,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
                 exit={{ opacity: 0, x: -20 }}
                 transition={{ duration: 0.3, ease: "easeInOut" }}
               >
-                <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg overflow-hidden">
+                <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-lg overflow-hidden py-0 border-t border-brand-seashell-200">
                   <CardHeader className="bg-brand-seashell-25 border-b border-brand-seashell-200">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-4">

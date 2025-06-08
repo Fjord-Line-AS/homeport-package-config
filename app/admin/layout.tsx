@@ -15,7 +15,7 @@ export default function AdminLayout({
       <div className="flex min-h-screen w-full">
         <Sidebar />
         <SidebarInset className="flex-1">
-          <main className="flex-1 p-6">{children}</main>
+          <main className="flex-1 px-4">{children}</main>
         </SidebarInset>
       </div>
     </SidebarProvider>

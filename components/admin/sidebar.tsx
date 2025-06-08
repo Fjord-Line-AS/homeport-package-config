@@ -64,14 +64,18 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <SidebarPrimitive>
-      <SidebarHeader className="border-b p-4">
-        <h2 className="text-lg font-semibold">Package Admin</h2>
+    <SidebarPrimitive className="border-r border-brand-seashell-25">
+      <SidebarHeader className="border-b border-brand-night-300 p-4">
+        <h2 className="text-lg font-semibold text-brand-night-900">
+          Package Admin
+        </h2>
       </SidebarHeader>
-      <SidebarContent>
+      <SidebarContent className="bg-brand-night-25">
         {navigation.map((section) => (
           <SidebarGroup key={section.title}>
-            <SidebarGroupLabel>{section.title}</SidebarGroupLabel>
+            <SidebarGroupLabel className="text-brand-night-700 font-medium">
+              {section.title}
+            </SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {section.items.map((item) => (
@@ -79,6 +83,7 @@ export function Sidebar() {
                     <SidebarMenuButton
                       asChild
                       isActive={pathname === item.href}
+                      className="data-[active=true]:bg-brand-ocean-100 data-[active=true]:text-brand-ocean-800 data-[active=true]:border-l-2 data-[active=true]:border-brand-ocean-600 hover:bg-brand-seashell-100"
                     >
                       <Link href={item.href}>
                         <item.icon className="h-4 w-4" />
