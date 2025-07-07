@@ -11,17 +11,29 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { getPackageRules } from "@/lib/sanity-mock";
 import { PackageRulesSearch } from "@/components/admin/package-rules-search";
+import { PackageRule_v2 } from "@fjordline/sanity-types";
+import { sanityFetch } from "@/lib/sanity/live";
+
+export async function getPackageRules(): Promise<PackageRule_v2[]> {
+  const sanityFetchConfig = {
+    query: `*[_type == "packageRule_v2"] | order(_updatedAt desc)`,
+  };
+  const res = await sanityFetch(sanityFetchConfig);
+  if (!res || !Array.isArray(res.data)) {
+    throw new Error("Failed to fetch package rules");
+  }
+  return res.data;
+}
 
 async function PackageRulesList() {
-  const rules = await getPackageRules();
+  const packages = await getPackageRules();
 
   return (
     <div className="grid gap-6">
-      {rules.map((rule, index) => (
+      {packages.map((pck, index) => (
         <Card
-          key={rule._id}
+          key={pck._id}
           className="group hover:shadow-brand-lg transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002]"
           style={{ animationDelay: `${index * 100}ms` }}
         >
@@ -35,42 +47,44 @@ async function PackageRulesList() {
                 </div>
                 <div>
                   <CardTitle className="text-xl text-brand-night-900 group-hover:text-brand-red-700 transition-colors">
-                    {rule.name}
+                    {pck.name}
                   </CardTitle>
-                  {rule.description && (
+                  {pck.description && (
                     <CardDescription className="mt-2 text-brand-night-600 leading-relaxed">
-                      {rule.description}
+                      {pck.description}
                     </CardDescription>
                   )}
                 </div>
               </div>
 
-              <div className="flex flex-wrap gap-2">
-                {rule.bundlePackageRules.journeyType && (
-                  <Badge
-                    variant="outline"
-                    className="border-brand-ocean-200 text-brand-ocean-700 bg-brand-ocean-50 hover:bg-brand-ocean-100 transition-colors"
-                  >
-                    {rule.bundlePackageRules.journeyType}
-                  </Badge>
-                )}
-                {rule.bundlePackageRules.cabinInfo?.cabins &&
-                rule.bundlePackageRules.cabinInfo.cabins.length > 0 ? (
-                  <Badge
-                    variant="default"
-                    className="bg-gradient-to-r from-brand-glow-800 to-brand-glow-900 text-white border-0 shadow-sm"
-                  >
-                    ✓ Cabins Configured
-                  </Badge>
-                ) : (
-                  <Badge
-                    variant="secondary"
-                    className="bg-brand-night-100 text-brand-night-700 border-brand-night-200"
-                  >
-                    No Cabin Config
-                  </Badge>
-                )}
-              </div>
+              {pck?.rules && (
+                <div className="flex flex-wrap gap-2">
+                  {pck.rules.journeyType && (
+                    <Badge
+                      variant="outline"
+                      className="border-brand-ocean-200 text-brand-ocean-700 bg-brand-ocean-50 hover:bg-brand-ocean-100 transition-colors"
+                    >
+                      {pck.rules.journeyType}
+                    </Badge>
+                  )}
+                  {pck.rules.cabinInfo?.cabins &&
+                  pck.rules.cabinInfo.cabins.length > 0 ? (
+                    <Badge
+                      variant="default"
+                      className="bg-gradient-to-r from-brand-glow-800 to-brand-glow-900 text-white border-0 shadow-sm"
+                    >
+                      ✓ Cabins Configured
+                    </Badge>
+                  ) : (
+                    <Badge
+                      variant="secondary"
+                      className="bg-brand-night-100 text-brand-night-700 border-brand-night-200"
+                    >
+                      No Cabin Config
+                    </Badge>
+                  )}
+                </div>
+              )}
             </div>
           </CardHeader>
 
@@ -78,27 +92,26 @@ async function PackageRulesList() {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
               <div className="flex items-center gap-2 text-sm text-brand-night-600">
                 <Users className="h-4 w-4 text-brand-ocean-500" />
-                <span>
-                  {rule.bundlePackageRules.personConfiguration
-                    ?.minTotalTravelers || 0}
-                  -
-                  {rule.bundlePackageRules.personConfiguration
-                    ?.maxTotalTravelers || "∞"}{" "}
-                  travelers
-                </span>
+                {pck?.rules && (
+                  <span>
+                    {pck.rules.personConfiguration?.minTotalTravelers || 0}-
+                    {pck.rules.personConfiguration?.maxTotalTravelers || "∞"}{" "}
+                    travelers
+                  </span>
+                )}
               </div>
 
               <div className="flex items-center gap-2 text-sm text-brand-night-600">
                 <Clock className="h-4 w-4 text-brand-glow-600" />
                 <span>
-                  {rule.bundlePackageRules.journeyDuration || "Not set"} hours
+                  {pck?.rules ? pck.rules.journeyDuration : "Not set"} hours
                 </span>
               </div>
 
               <div className="flex items-center gap-2 text-sm text-brand-night-600">
                 <TrendingUp className="h-4 w-4 text-brand-red-500" />
                 <span>
-                  Updated {new Date(rule._updatedAt).toLocaleDateString()}
+                  Updated {new Date(pck._updatedAt).toLocaleDateString()}
                 </span>
               </div>
             </div>
@@ -117,7 +130,7 @@ async function PackageRulesList() {
                 size="sm"
                 className="border-brand-red-200 text-brand-red-700 hover:bg-brand-red-50 hover:border-brand-red-300 transition-all duration-200 group-hover:shadow-md"
               >
-                <Link href={`/admin/package-rules/${rule._id}`}>Edit Rule</Link>
+                <Link href={`/admin/package-rules/${pck._id}`}>Edit Rule</Link>
               </Button>
             </div>
           </CardContent>

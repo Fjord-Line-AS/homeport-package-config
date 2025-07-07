@@ -40,16 +40,15 @@ import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-
-import type {
+import {
+  Accommodation_v2,
+  AllowedVehicleCategory,
   PackageRule_v2,
   Port,
-  ShipProductCode,
   Ship,
   ShipCabin,
-  AllowedVehicleCategory,
-  Accommodation_v2,
-} from "@/lib/types";
+  ShipProductCode,
+} from "@fjordline/sanity-types";
 import { packageRuleSchema, type PackageRuleFormData } from "@/lib/validation";
 import { updatePackageRule, createPackageRule } from "@/lib/sanity-mock";
 import {
@@ -183,11 +182,11 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
 
   const form = useForm<PackageRuleFormData>({
     resolver: zodResolver(packageRuleSchema),
-    defaultValues: rule
+    defaultValues: rule?.rules
       ? {
           name: rule.name,
           description: rule.description || "",
-          bundlePackageRules: rule.bundlePackageRules,
+          bundlePackageRules: rule.rules,
         }
       : {
           name: "",
@@ -207,15 +206,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
                 locked: false,
               },
             },
-            weekdays: {
-              monday: true,
-              tuesday: true,
-              wednesday: true,
-              thursday: true,
-              friday: true,
-              saturday: true,
-              sunday: true,
-            },
+            weekdays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
             personConfiguration: {
               minTotalTravelers: 1,
               roomQuantity: {

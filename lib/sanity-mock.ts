@@ -1,118 +1,279 @@
 import type {
-  PackageRule_v2,
   Port,
   ShipProductCode,
   Ship,
   ShipCabin,
   AllowedVehicleCategory,
   Accommodation_v2,
-} from "./types";
+  PackageRule_v2,
+} from "@fjordline/sanity-types";
 
 // Mock reference data
 export const mockPorts: Port[] = [
-  { _id: "port1", name: "Portsmouth", code: "POR", country: "UK" },
-  { _id: "port2", name: "Le Havre", code: "LEH", country: "France" },
-  { _id: "port3", name: "Caen", code: "CAE", country: "France" },
-  { _id: "port4", name: "Cherbourg", code: "CHE", country: "France" },
+  {
+    _id: "port1",
+    name: { nb: "test", _type: "localeString" },
+    portCode: "POR",
+    _type: "port",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _rev: "12",
+    _updatedAt: "2024-01-02T00:00:00Z",
+  },
+  {
+    _id: "port2",
+    name: { nb: "test", _type: "localeString" },
+    portCode: "LEH",
+    _type: "port",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _rev: "12",
+    _updatedAt: "2024-01-02T00:00:00Z",
+  },
+  {
+    _id: "port3",
+    name: { nb: "test", _type: "localeString" },
+    portCode: "CAE",
+    _type: "port",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _rev: "12",
+    _updatedAt: "2024-01-02T00:00:00Z",
+  },
+  {
+    _id: "port4",
+    name: { nb: "test", _type: "localeString" },
+    portCode: "CHE",
+    _type: "port",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _rev: "12",
+    _updatedAt: "2024-01-02T00:00:00Z",
+  },
 ];
 
 export const mockShipProductCodes: ShipProductCode[] = [
   {
     _id: "prod1",
-    code: "FERRY-STD",
-    name: "Standard Ferry Crossing",
-    description: "Standard ferry service",
+    productCode: "FERRY-STD",
+    productName: { _type: "localeString", nb: "Standard Ferry Crossing" },
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipProductCode",
   },
   {
     _id: "prod2",
-    code: "FERRY-PREM",
-    name: "Premium Ferry Crossing",
-    description: "Premium ferry service",
+    productName: { _type: "localeString", nb: "Standard Ferry Crossing" },
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipProductCode",
   },
   {
     _id: "prod3",
-    code: "FERRY-FLEX",
-    name: "Flexible Ferry Crossing",
-    description: "Flexible ferry service",
+    productName: { _type: "localeString", nb: "Standard Ferry Crossing" },
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipProductCode",
   },
 ];
 
 export const mockShips: Ship[] = [
-  { _id: "ship1", name: "Normandie Express", code: "NE" },
-  { _id: "ship2", name: "Brittany Ferries", code: "BF" },
-  { _id: "ship3", name: "P&O Pioneer", code: "PP" },
+  {
+    _id: "ship1",
+    shipName: { _type: "localeString", nb: "MS Stavangerfjord" },
+    _rev: "12",
+    _createdAt: "12-12-12",
+    shipCode: "NB87",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _type: "ship",
+  },
+  {
+    _id: "ship2",
+    shipName: { _type: "localeString", nb: "MS Bergensfjord" },
+    _rev: "12",
+    _createdAt: "12-12-12",
+    shipCode: "NB87",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _type: "ship",
+  },
+  {
+    _id: "ship3",
+    shipName: { _type: "localeString", nb: "Fjord FSTR" },
+    _rev: "12",
+    _createdAt: "12-12-12",
+    shipCode: "NB87",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _type: "ship",
+  },
 ];
 
 export const mockShipCabins: ShipCabin[] = [
   {
     _id: "cabin1",
-    cabinName: { nb: "Standard Innvendig", en: "Standard Inside" },
-    code: "STD-IN",
-    category: "INTERIOR_CABINS",
+    cabinName: {
+      nb: "Standard Innvendig",
+      en: "Standard Inside",
+      _type: "localeString",
+    },
+    cabinType: "B1",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipCabin",
   },
   {
     _id: "cabin2",
-    cabinName: { nb: "Standard Utvendig", en: "Standard Outside" },
-    code: "STD-OUT",
-    category: "EXTERIOR_CABINS",
+    cabinName: {
+      nb: "Standard Utvendig",
+      en: "Standard Outside",
+      _type: "localeString",
+    },
+    cabinType: "STD-OUT",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipCabin",
   },
   {
     _id: "cabin3",
-    cabinName: { nb: "Premium Suite", en: "Premium Suite" },
-    code: "PREM-STE",
-    category: "EXTERIOR_CABINS",
+    cabinName: {
+      nb: "Premium Suite",
+      en: "Premium Suite",
+      _type: "localeString",
+    },
+    cabinType: "PREM-STE",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipCabin",
   },
   {
     _id: "cabin4",
-    cabinName: { nb: "Sete", en: "Seat" },
-    code: "SEAT",
-    category: "SEATS",
+    cabinName: {
+      nb: "Premium Suite",
+      en: "Premium Suite",
+      _type: "localeString",
+    },
+    cabinType: "SEAT",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+    _type: "shipCabin",
   },
 ];
 
 export const mockVehicleCategories: AllowedVehicleCategory[] = [
-  { _id: "veh1", name: "Standard Car", code: "STD_VEHICLE", type: "VEHICLE" },
-  { _id: "veh2", name: "Large Car", code: "LRG_VEHICLE", type: "VEHICLE" },
-  { _id: "veh3", name: "Motorcycle", code: "STD_MC", type: "MC" },
-  { _id: "veh4", name: "Large Motorcycle", code: "LRG_MC", type: "MC" },
+  {
+    _id: "veh1",
+    name: {
+      nb: "Test",
+      da: "test",
+      en: "TEST",
+      de: "TesT",
+      _type: "localeString",
+    },
+    code: "STD_VEHICLE",
+    _type: "allowedVehicleCategory",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+  },
+  {
+    _id: "veh2",
+    name: {
+      nb: "Test",
+      da: "test",
+      en: "TEST",
+      de: "TesT",
+      _type: "localeString",
+    },
+    code: "LRG_VEHICLE",
+    _type: "allowedVehicleCategory",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+  },
+  {
+    _id: "veh3",
+    name: {
+      nb: "Test",
+      da: "test",
+      en: "TEST",
+      de: "TesT",
+      _type: "localeString",
+    },
+    code: "STD_MC",
+    _type: "allowedVehicleCategory",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+  },
+  {
+    _id: "veh4",
+    name: {
+      nb: "Test",
+      da: "test",
+      en: "TEST",
+      de: "TesT",
+      _type: "localeString",
+    },
+    code: "LRG_MC",
+    _type: "allowedVehicleCategory",
+    _createdAt: "2024-01-01T00:00:00Z",
+    _updatedAt: "2024-01-02T00:00:00Z",
+    _rev: "1",
+  },
 ];
 
 export const mockAccommodations: Accommodation_v2[] = [
   {
     _id: "acc1",
+    _type: "accommodation_v2",
+    _createdAt: "2025-01-01T00:00:00Z",
+    _updatedAt: "2025-01-01T00:00:00Z",
+    _rev: "rev-acc1",
     title: "Hotel Standard",
     language: "nb",
     location: {
-      place: {
-        area: {
-          country: { _ref: "country1", _type: "reference" },
-        },
-      },
+      _type: "location_v2",
+      place: { _ref: "place1", _type: "reference" }, // 💥 FIXED HERE
     },
+    bookableOnWeb: true,
+    metaTitle: { nb: "Hotel Standard" },
+    metaDescription: { nb: "Et standard hotell" },
+    slug: { _type: "slug", current: "hotel-standard" },
+    description: [],
   },
   {
     _id: "acc2",
+    _type: "accommodation_v2",
+    _createdAt: "2025-01-01T00:00:00Z",
+    _updatedAt: "2025-01-01T00:00:00Z",
+    _rev: "rev-acc2",
     title: "Hotel Premium",
     language: "nb",
     location: {
-      place: {
-        area: {
-          country: { _ref: "country1", _type: "reference" },
-        },
-      },
+      _type: "location_v2",
+      place: { _ref: "place2", _type: "reference" }, // 💥 FIXED HERE
     },
+    bookableOnWeb: true,
+    metaTitle: { nb: "Hotel Premium" },
+    metaDescription: { nb: "Et premium hotell" },
+    slug: { _type: "slug", current: "hotel-premium" },
+    description: [],
   },
 ];
 
 export const mockPackageRules: PackageRule_v2[] = [
   {
     _id: "rule1",
+    _type: "packageRule_v2",
+    _rev: "rev1",
     name: "Standard Bergen - Hirtshals Return",
     description:
       "Standard return ferry crossing between Bergen and Hirtshals ports",
     _createdAt: "2024-01-15T10:00:00Z",
     _updatedAt: "2024-01-20T14:30:00Z",
-    bundlePackageRules: {
+    rules: {
       _type: "bundlePackageRules",
       packageCode: "STD-UK-FR-RET",
       journeyType: "RETURN",
@@ -138,15 +299,15 @@ export const mockPackageRules: PackageRule_v2[] = [
           locked: false,
         },
       },
-      weekdays: {
-        monday: true,
-        tuesday: true,
-        wednesday: true,
-        thursday: true,
-        friday: true,
-        saturday: true,
-        sunday: false,
-      },
+      weekdays: [
+        "monday",
+        "tuesday",
+        "wednesday",
+        "thursday",
+        "friday",
+        "saturday",
+        "sunday",
+      ],
       journeyDuration: 6,
       daysAshore: 1,
       personConfiguration: {
@@ -285,11 +446,6 @@ export async function createPackageRule(
 
   mockPackageRules.push(newRule);
   return newRule;
-}
-
-// Reference data getters
-export async function getPorts(): Promise<Port[]> {
-  return mockPorts;
 }
 
 export async function getShipProductCodes(): Promise<ShipProductCode[]> {

@@ -30,14 +30,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { PackageRuleFormData } from "@/lib/validation";
-import type {
+import {
+  Accommodation_v2,
+  AllowedVehicleCategory,
   Port,
-  ShipProductCode,
   Ship,
   ShipCabin,
-  AllowedVehicleCategory,
-  Accommodation_v2,
-} from "@/lib/types";
+  ShipProductCode,
+} from "@fjordline/sanity-types";
 
 interface ReferenceData {
   ports: Port[];

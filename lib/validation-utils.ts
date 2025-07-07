@@ -149,16 +149,7 @@ function validateDates(formData: PackageRuleFormData): ValidationSection {
 
   // Check if at least one weekday is selected
   const weekdays = formData.bundlePackageRules?.weekdays;
-  if (
-    weekdays &&
-    (weekdays.monday ||
-      weekdays.tuesday ||
-      weekdays.wednesday ||
-      weekdays.thursday ||
-      weekdays.friday ||
-      weekdays.saturday ||
-      weekdays.sunday)
-  ) {
+  if (weekdays && weekdays.length > 0) {
     completedFields.push("bundlePackageRules.weekdays");
   } else {
     errors.push("At least one weekday must be selected");

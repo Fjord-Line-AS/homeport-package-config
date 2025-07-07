@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { PackageRule_v2 } from "@fjordline/sanity-types";
 
 const sanityReferenceSchema = z.object({
   _ref: z.string(),
@@ -13,7 +14,7 @@ const sanityReferenceWithKeySchema = sanityReferenceSchema.extend({
 export const packageRuleSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name too long"),
   description: z.string().optional(),
-  bundlePackageRules: z.object({
+  rules: z.object({
     packageCode: z.string().optional(),
     journeyType: z
       .enum(["ONEWAY", "RETURN", "ONEWAY_RETURN", "CRUISE", "PACKAGE"])
@@ -55,15 +56,17 @@ export const packageRuleSchema = z.object({
       })
       .optional(),
     weekdays: z
-      .object({
-        monday: z.boolean().optional(),
-        tuesday: z.boolean().optional(),
-        wednesday: z.boolean().optional(),
-        thursday: z.boolean().optional(),
-        friday: z.boolean().optional(),
-        saturday: z.boolean().optional(),
-        sunday: z.boolean().optional(),
-      })
+      .array(
+        z.enum([
+          "monday",
+          "tuesday",
+          "wednesday",
+          "thursday",
+          "friday",
+          "saturday",
+          "sunday",
+        ])
+      )
       .optional(),
     journeyDuration: z.number().min(0).optional(),
     daysAshore: z.number().min(0).optional(),

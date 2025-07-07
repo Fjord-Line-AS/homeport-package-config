@@ -20,14 +20,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { PackageRuleFormData } from "@/lib/validation";
-import type {
+import {
+  Accommodation_v2,
+  AllowedVehicleCategory,
   Port,
-  ShipProductCode,
   Ship,
   ShipCabin,
-  AllowedVehicleCategory,
-  Accommodation_v2,
-} from "@/lib/types";
+  ShipProductCode,
+} from "@fjordline/sanity-types";
 
 interface ReferenceData {
   ports: Port[];
@@ -53,10 +53,10 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
   );
 
   const carCategories = referenceData.vehicleCategories.filter(
-    (cat) => cat.type === "VEHICLE"
+    (cat) => cat.code === "VEHICLE"
   );
   const motorcycleCategories = referenceData.vehicleCategories.filter(
-    (cat) => cat.type === "MC"
+    (cat) => cat.code === "MC"
   );
 
   return (
@@ -163,7 +163,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                               />
                             </FormControl>
                             <FormLabel className="text-sm font-normal">
-                              {category.name} ({category.code})
+                              {category.name?.en} ({category.code})
                             </FormLabel>
                           </FormItem>
                         );
@@ -285,7 +285,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                               />
                             </FormControl>
                             <FormLabel className="text-sm font-normal">
-                              {category.name} ({category.code})
+                              {category.name?.en} ({category.code})
                             </FormLabel>
                           </FormItem>
                         );

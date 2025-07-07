@@ -31,14 +31,14 @@ import {
 } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import type { PackageRuleFormData } from "@/lib/validation";
-import type {
+import {
+  Accommodation_v2,
+  AllowedVehicleCategory,
   Port,
-  ShipProductCode,
   Ship,
   ShipCabin,
-  AllowedVehicleCategory,
-  Accommodation_v2,
-} from "@/lib/types";
+  ShipProductCode,
+} from "@fjordline/sanity-types";
 
 interface ReferenceData {
   ports: Port[];
@@ -155,8 +155,8 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                           />
                         </FormControl>
                         <FormLabel className="text-sm font-normal">
-                          {cabin.cabinName.en || cabin.cabinName.nb} (
-                          {cabin.code})
+                          {cabin.cabinName?.en || cabin.cabinName?.nb} (
+                          {cabin.cabinType})
                         </FormLabel>
                       </FormItem>
                     );
@@ -252,8 +252,8 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                           />
                         </FormControl>
                         <FormLabel className="text-sm font-normal">
-                          {cabin.cabinName.en || cabin.cabinName.nb} (
-                          {cabin.code})
+                          {cabin.cabinName?.en || cabin.cabinName?.nb} (
+                          {cabin.cabinType})
                         </FormLabel>
                       </FormItem>
                     );
@@ -339,8 +339,8 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                               <SelectContent>
                                 {referenceData.shipCabins.map((cabin) => (
                                   <SelectItem key={cabin._id} value={cabin._id}>
-                                    {cabin.cabinName.en || cabin.cabinName.nb} (
-                                    {cabin.code})
+                                    {cabin.cabinName?.en || cabin.cabinName?.nb}{" "}
+                                    ({cabin.cabinType})
                                   </SelectItem>
                                 ))}
                               </SelectContent>

@@ -26,14 +26,14 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import type { PackageRuleFormData } from "@/lib/validation";
-import type {
+import {
   Port,
   ShipProductCode,
   Ship,
   ShipCabin,
   AllowedVehicleCategory,
   Accommodation_v2,
-} from "@/lib/types";
+} from "@fjordline/sanity-types";
 
 interface ReferenceData {
   ports: Port[];
@@ -92,7 +92,8 @@ export function PortConfigurationSection({
                     <SelectContent>
                       {referenceData.ports.map((port) => (
                         <SelectItem key={port._id} value={port._id}>
-                          {port.name} ({port.code}) - {port.country}
+                          {port.name?.en} ({port.portCode}) -{" "}
+                          {port.internationalPortCode}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -126,7 +127,8 @@ export function PortConfigurationSection({
                     <SelectContent>
                       {referenceData.ports.map((port) => (
                         <SelectItem key={port._id} value={port._id}>
-                          {port.name} ({port.code}) - {port.country}
+                          {port.name?.en} ({port.portCode}) -{" "}
+                          {port.internationalPortCode}
                         </SelectItem>
                       ))}
                     </SelectContent>
@@ -178,7 +180,8 @@ export function PortConfigurationSection({
                           />
                         </FormControl>
                         <FormLabel className="text-sm font-normal">
-                          {port.name} ({port.code}) - {port.country}
+                          {port.name?.en} ({port.portCode}) -{" "}
+                          {port.internationalPortCode}
                         </FormLabel>
                       </FormItem>
                     );
@@ -228,7 +231,8 @@ export function PortConfigurationSection({
                           />
                         </FormControl>
                         <FormLabel className="text-sm font-normal">
-                          {port.name} ({port.code}) - {port.country}
+                          {port.name?.en} ({port.portCode}) -{" "}
+                          {port.internationalPortCode}
                         </FormLabel>
                       </FormItem>
                     );
@@ -302,7 +306,8 @@ export function PortConfigurationSection({
                         <SelectContent>
                           {referenceData.ports.map((port) => (
                             <SelectItem key={port._id} value={port._id}>
-                              {port.name} ({port.code}) - {port.country}
+                              {port.name?.en} ({port.portCode}) -{" "}
+                              {port.internationalPortCode}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -338,7 +343,8 @@ export function PortConfigurationSection({
                         <SelectContent>
                           {referenceData.ports.map((port) => (
                             <SelectItem key={port._id} value={port._id}>
-                              {port.name} ({port.code}) - {port.country}
+                              {port.name?.en} ({port.portCode}) -{" "}
+                              {port.internationalPortCode}
                             </SelectItem>
                           ))}
                         </SelectContent>
@@ -409,7 +415,7 @@ export function PortConfigurationSection({
                           />
                         </FormControl>
                         <FormLabel className="text-sm font-normal">
-                          {ship.name} ({ship.code})
+                          {ship.shipName?.en} ({ship.shipCode})
                         </FormLabel>
                       </FormItem>
                     );

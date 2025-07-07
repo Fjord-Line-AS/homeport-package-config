@@ -19,14 +19,14 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import type { PackageRuleFormData } from "@/lib/validation";
-import type {
+import {
+  Accommodation_v2,
+  AllowedVehicleCategory,
   Port,
-  ShipProductCode,
   Ship,
   ShipCabin,
-  AllowedVehicleCategory,
-  Accommodation_v2,
-} from "@/lib/types";
+  ShipProductCode,
+} from "@fjordline/sanity-types";
 
 interface ReferenceData {
   ports: Port[];
@@ -160,7 +160,7 @@ export function JourneyInfoSection({
                 <SelectContent>
                   {referenceData.shipProductCodes.map((product) => (
                     <SelectItem key={product._id} value={product._id}>
-                      {product.code} - {product.name}
+                      {product.productCode} - {product.productName?.en}
                     </SelectItem>
                   ))}
                 </SelectContent>

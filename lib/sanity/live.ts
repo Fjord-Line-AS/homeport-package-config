@@ -4,8 +4,9 @@ import { sanityApiClient } from "./client";
 
 // set your viewer token
 const token = process.env.SANITY_TOKEN;
+console.log("SANITY_TOKEN", token);
 if (!token) {
-  throw new Error("Missing SANITY_API_READ_TOKEN");
+  // throw new Error("Missing SANITY_API_READ_TOKEN");
 }
 
 // export the sanityFetch helper and the SanityLive component
