@@ -54,7 +54,7 @@ export function PortConfigurationSection({
   referenceData,
 }: PortConfigurationSectionProps) {
   const watchAllowDifferentReturn = form.watch(
-    "bundlePackageRules.ports.allowDifferentReturn"
+    "rules.ports.allowDifferentReturn"
   );
 
   return (
@@ -71,7 +71,7 @@ export function PortConfigurationSection({
           <div className="grid gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
-              name="bundlePackageRules.ports.defaultPortFrom"
+              name="rules.ports.defaultPortFrom"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Default Port From</FormLabel>
@@ -106,7 +106,7 @@ export function PortConfigurationSection({
 
             <FormField
               control={form.control}
-              name="bundlePackageRules.ports.defaultPortTo"
+              name="rules.ports.defaultPortTo"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Default Port To</FormLabel>
@@ -149,7 +149,7 @@ export function PortConfigurationSection({
                 <FormField
                   key={`from-${port._id}`}
                   control={form.control}
-                  name="bundlePackageRules.ports.availablePortsFrom"
+                  name="rules.ports.availablePortsFrom"
                   render={({ field }) => {
                     const isChecked =
                       field.value?.some((ref) => ref._ref === port._id) ||
@@ -200,7 +200,7 @@ export function PortConfigurationSection({
                 <FormField
                   key={`to-${port._id}`}
                   control={form.control}
-                  name="bundlePackageRules.ports.availablePortsTo"
+                  name="rules.ports.availablePortsTo"
                   render={({ field }) => {
                     const isChecked =
                       field.value?.some((ref) => ref._ref === port._id) ||
@@ -255,7 +255,7 @@ export function PortConfigurationSection({
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.ports.allowDifferentReturn"
+            name="rules.ports.allowDifferentReturn"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -285,7 +285,7 @@ export function PortConfigurationSection({
               <div className="grid gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.ports.returnPorts.defaultPortFrom"
+                  name="rules.ports.returnPorts.defaultPortFrom"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Default Return Port From</FormLabel>
@@ -322,7 +322,7 @@ export function PortConfigurationSection({
 
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.ports.returnPorts.defaultPortTo"
+                  name="rules.ports.returnPorts.defaultPortTo"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Default Return Port To</FormLabel>
@@ -384,7 +384,7 @@ export function PortConfigurationSection({
                 <FormField
                   key={`vessel-${ship._id}`}
                   control={form.control}
-                  name="bundlePackageRules.allowedVesselsForDeparture"
+                  name="rules.allowedVesselsForDeparture"
                   render={({ field }) => {
                     const isChecked =
                       field.value?.some((ref) => ref._ref === ship._id) ||

@@ -71,7 +71,7 @@ export function JourneyInfoSection({
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.packageCode"
+          name="rules.packageCode"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Package Code</FormLabel>
@@ -109,7 +109,7 @@ export function JourneyInfoSection({
       <div className="grid gap-4 md:grid-cols-2">
         <FormField
           control={form.control}
-          name="bundlePackageRules.journeyType"
+          name="rules.journeyType"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Journey Type</FormLabel>
@@ -139,7 +139,7 @@ export function JourneyInfoSection({
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.productCode"
+          name="rules.productCode"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Product Code</FormLabel>
@@ -177,7 +177,7 @@ export function JourneyInfoSection({
       <div className="grid gap-4 md:grid-cols-2">
         <FormField
           control={form.control}
-          name="bundlePackageRules.journeyDuration"
+          name="rules.journeyDuration"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Journey Duration (hours)</FormLabel>
@@ -207,7 +207,7 @@ export function JourneyInfoSection({
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.daysAshore"
+          name="rules.daysAshore"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Days Ashore</FormLabel>

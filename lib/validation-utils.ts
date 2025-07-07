@@ -63,26 +63,18 @@ export function validatePackageRule(
 }
 
 function validateBasicInfo(formData: PackageRuleFormData): ValidationSection {
-  const requiredFields = [
-    "name",
-    "bundlePackageRules.journeyType",
-    "bundlePackageRules.packageCode",
-  ];
+  const requiredFields = ["name", "rules.journeyType", "rules.packageCode"];
   const completedFields = [];
   const errors = [];
 
   if (formData.name && formData.name.trim()) completedFields.push("name");
   else errors.push("Rule name is required");
 
-  if (formData.bundlePackageRules?.journeyType)
-    completedFields.push("bundlePackageRules.journeyType");
+  if (formData.rules?.journeyType) completedFields.push("rules.journeyType");
   else errors.push("Journey type is required");
 
-  if (
-    formData.bundlePackageRules?.packageCode &&
-    formData.bundlePackageRules.packageCode.trim()
-  )
-    completedFields.push("bundlePackageRules.packageCode");
+  if (formData.rules?.packageCode && formData.rules.packageCode.trim())
+    completedFields.push("rules.packageCode");
   else errors.push("Package code is required");
 
   let status: ValidationSection["status"] = "incomplete";
@@ -104,27 +96,27 @@ function validatePortConfiguration(
   formData: PackageRuleFormData
 ): ValidationSection {
   const requiredFields = [
-    "bundlePackageRules.ports.defaultPortFrom",
-    "bundlePackageRules.ports.defaultPortTo",
+    "rules.ports.defaultPortFrom",
+    "rules.ports.defaultPortTo",
   ];
   const completedFields = [];
   const errors = [];
 
-  if (formData.bundlePackageRules?.ports?.defaultPortFrom?._ref)
-    completedFields.push("bundlePackageRules.ports.defaultPortFrom");
+  if (formData.rules?.ports?.defaultPortFrom?._ref)
+    completedFields.push("rules.ports.defaultPortFrom");
   else errors.push("Default departure port is required");
 
-  if (formData.bundlePackageRules?.ports?.defaultPortTo?._ref)
-    completedFields.push("bundlePackageRules.ports.defaultPortTo");
+  if (formData.rules?.ports?.defaultPortTo?._ref)
+    completedFields.push("rules.ports.defaultPortTo");
   else errors.push("Default arrival port is required");
 
   // Check if available ports are configured
-  if (formData.bundlePackageRules?.ports?.availablePortsFrom?.length) {
-    completedFields.push("bundlePackageRules.ports.availablePortsFrom");
+  if (formData.rules?.ports?.availablePortsFrom?.length) {
+    completedFields.push("rules.ports.availablePortsFrom");
   }
 
-  if (formData.bundlePackageRules?.ports?.availablePortsTo?.length) {
-    completedFields.push("bundlePackageRules.ports.availablePortsTo");
+  if (formData.rules?.ports?.availablePortsTo?.length) {
+    completedFields.push("rules.ports.availablePortsTo");
   }
 
   let status: ValidationSection["status"] = "incomplete";
@@ -143,21 +135,21 @@ function validatePortConfiguration(
 }
 
 function validateDates(formData: PackageRuleFormData): ValidationSection {
-  const requiredFields = ["bundlePackageRules.weekdays"];
+  const requiredFields = ["rules.weekdays"];
   const completedFields = [];
   const errors = [];
 
   // Check if at least one weekday is selected
-  const weekdays = formData.bundlePackageRules?.weekdays;
+  const weekdays = formData.rules?.weekdays;
   if (weekdays && weekdays.length > 0) {
-    completedFields.push("bundlePackageRules.weekdays");
+    completedFields.push("rules.weekdays");
   } else {
     errors.push("At least one weekday must be selected");
   }
 
   // Journey duration is recommended
-  if (formData.bundlePackageRules?.journeyDuration) {
-    completedFields.push("bundlePackageRules.journeyDuration");
+  if (formData.rules?.journeyDuration) {
+    completedFields.push("rules.journeyDuration");
   }
 
   let status: ValidationSection["status"] = "incomplete";
@@ -179,37 +171,30 @@ function validatePersonConfiguration(
   formData: PackageRuleFormData
 ): ValidationSection {
   const requiredFields = [
-    "bundlePackageRules.personConfiguration.minTotalTravelers",
-    "bundlePackageRules.personConfiguration.adults.minQuantity",
+    "rules.personConfiguration.minTotalTravelers",
+    "rules.personConfiguration.adults.minQuantity",
   ];
   const completedFields = [];
   const errors = [];
 
-  if (formData.bundlePackageRules?.personConfiguration?.minTotalTravelers) {
-    completedFields.push(
-      "bundlePackageRules.personConfiguration.minTotalTravelers"
-    );
+  if (formData.rules?.personConfiguration?.minTotalTravelers) {
+    completedFields.push("rules.personConfiguration.minTotalTravelers");
   } else {
     errors.push("Minimum total travelers is required");
   }
 
-  if (
-    formData.bundlePackageRules?.personConfiguration?.adults?.minQuantity !==
-    undefined
-  ) {
-    completedFields.push(
-      "bundlePackageRules.personConfiguration.adults.minQuantity"
-    );
+  if (formData.rules?.personConfiguration?.adults?.minQuantity !== undefined) {
+    completedFields.push("rules.personConfiguration.adults.minQuantity");
   } else {
     errors.push("Minimum number of adults is required");
   }
 
   // Check for logical errors
   if (
-    formData.bundlePackageRules?.personConfiguration?.minTotalTravelers &&
-    formData.bundlePackageRules?.personConfiguration?.maxTotalTravelers &&
-    formData.bundlePackageRules.personConfiguration.minTotalTravelers >
-      formData.bundlePackageRules.personConfiguration.maxTotalTravelers
+    formData.rules?.personConfiguration?.minTotalTravelers &&
+    formData.rules?.personConfiguration?.maxTotalTravelers &&
+    formData.rules.personConfiguration.minTotalTravelers >
+      formData.rules.personConfiguration.maxTotalTravelers
   ) {
     errors.push("Minimum travelers cannot be greater than maximum travelers");
   }
@@ -236,16 +221,16 @@ function validateVehicles(formData: PackageRuleFormData): ValidationSection {
   const errors = [];
 
   // Check if car configuration is complete
-  if (formData.bundlePackageRules?.vehicles?.car?.value !== undefined) {
-    completedFields.push("bundlePackageRules.vehicles.car.value");
+  if (formData.rules?.vehicles?.car?.value !== undefined) {
+    completedFields.push("rules.vehicles.car.value");
   }
 
   // Check if car categories are selected when needed
   if (
-    formData.bundlePackageRules?.vehicles?.car?.value &&
-    formData.bundlePackageRules.vehicles.car.value > 0 &&
-    (!formData.bundlePackageRules.vehicles.car.vehicleCategories ||
-      formData.bundlePackageRules.vehicles.car.vehicleCategories.length === 0)
+    formData.rules?.vehicles?.car?.value &&
+    formData.rules.vehicles.car.value > 0 &&
+    (!formData.rules.vehicles.car.vehicleCategories ||
+      formData.rules.vehicles.car.vehicleCategories.length === 0)
   ) {
     errors.push("Vehicle categories must be selected when cars are enabled");
   }
@@ -271,13 +256,13 @@ function validateCabins(formData: PackageRuleFormData): ValidationSection {
 
   // Check if cabin configurations exist
   if (
-    formData.bundlePackageRules?.cabinInfo?.cabins &&
-    formData.bundlePackageRules.cabinInfo.cabins.length > 0
+    formData.rules?.cabinInfo?.cabins &&
+    formData.rules.cabinInfo.cabins.length > 0
   ) {
-    completedFields.push("bundlePackageRules.cabinInfo.cabins");
+    completedFields.push("rules.cabinInfo.cabins");
 
     // Check if all cabin configurations have a cabin type
-    const invalidCabins = formData.bundlePackageRules.cabinInfo.cabins.filter(
+    const invalidCabins = formData.rules.cabinInfo.cabins.filter(
       (cabin) => !cabin.cabinType || !cabin.cabinType._ref
     );
     if (invalidCabins.length > 0) {
@@ -308,14 +293,14 @@ function validateAccommodation(
 
   // Check if accommodation configurations exist
   if (
-    formData.bundlePackageRules?.accommodationInfo?.accommodations &&
-    formData.bundlePackageRules.accommodationInfo.accommodations.length > 0
+    formData.rules?.accommodationInfo?.accommodations &&
+    formData.rules.accommodationInfo.accommodations.length > 0
   ) {
-    completedFields.push("bundlePackageRules.accommodationInfo.accommodations");
+    completedFields.push("rules.accommodationInfo.accommodations");
 
     // Check if all accommodation configurations have an accommodation type
     const invalidAccommodations =
-      formData.bundlePackageRules.accommodationInfo.accommodations.filter(
+      formData.rules.accommodationInfo.accommodations.filter(
         (acc) => !acc.accommodationType || !acc.accommodationType._ref
       );
     if (invalidAccommodations.length > 0) {

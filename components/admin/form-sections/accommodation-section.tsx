@@ -59,7 +59,7 @@ export function AccommodationSection({
 }: AccommodationSectionProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "bundlePackageRules.accommodationInfo.accommodations",
+    name: "rules.accommodationInfo.accommodations",
   });
 
   const addAccommodation = () => {
@@ -123,7 +123,7 @@ export function AccommodationSection({
                     <div className="grid gap-4 md:grid-cols-2">
                       <FormField
                         control={form.control}
-                        name={`bundlePackageRules.accommodationInfo.accommodations.${index}.accommodationType`}
+                        name={`rules.accommodationInfo.accommodations.${index}.accommodationType`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Accommodation Type</FormLabel>
@@ -165,7 +165,7 @@ export function AccommodationSection({
 
                       <FormField
                         control={form.control}
-                        name={`bundlePackageRules.accommodationInfo.accommodations.${index}.additonalCost`}
+                        name={`rules.accommodationInfo.accommodations.${index}.additonalCost`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Additional Cost</FormLabel>
@@ -202,7 +202,7 @@ export function AccommodationSection({
                         <div className="grid gap-4 md:grid-cols-2">
                           <FormField
                             control={form.control}
-                            name={`bundlePackageRules.accommodationInfo.accommodations.${index}.roomDetails.value`}
+                            name={`rules.accommodationInfo.accommodations.${index}.roomDetails.value`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormLabel>Number of Rooms</FormLabel>
@@ -230,7 +230,7 @@ export function AccommodationSection({
 
                           <FormField
                             control={form.control}
-                            name={`bundlePackageRules.accommodationInfo.accommodations.${index}.roomDetails.locked`}
+                            name={`rules.accommodationInfo.accommodations.${index}.roomDetails.locked`}
                             render={({ field }) => (
                               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                                 <div className="space-y-0.5">

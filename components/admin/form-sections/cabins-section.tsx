@@ -57,7 +57,7 @@ interface CabinsSectionProps {
 export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
   const { fields, append, remove } = useFieldArray({
     control: form.control,
-    name: "bundlePackageRules.cabinInfo.cabins",
+    name: "rules.cabinInfo.cabins",
   });
 
   const addCabinType = () => {
@@ -83,7 +83,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.cabinInfo.outbound.cabinSuggestGroups"
+            name="rules.cabinInfo.outbound.cabinSuggestGroups"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Cabin Suggest Group</FormLabel>
@@ -124,7 +124,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                 <FormField
                   key={`outbound-${cabin._id}`}
                   control={form.control}
-                  name="bundlePackageRules.cabinInfo.outbound.cabins"
+                  name="rules.cabinInfo.outbound.cabins"
                   render={({ field }) => {
                     const isChecked =
                       field.value?.some((ref) => ref._ref === cabin._id) ||
@@ -180,7 +180,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.cabinInfo.inbound.cabinSuggestGroups"
+            name="rules.cabinInfo.inbound.cabinSuggestGroups"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Cabin Suggest Group</FormLabel>
@@ -221,7 +221,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                 <FormField
                   key={`inbound-${cabin._id}`}
                   control={form.control}
-                  name="bundlePackageRules.cabinInfo.inbound.cabins"
+                  name="rules.cabinInfo.inbound.cabins"
                   render={({ field }) => {
                     const isChecked =
                       field.value?.some((ref) => ref._ref === cabin._id) ||
@@ -318,7 +318,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                     <div className="grid gap-4 md:grid-cols-3">
                       <FormField
                         control={form.control}
-                        name={`bundlePackageRules.cabinInfo.cabins.${index}.cabinType`}
+                        name={`rules.cabinInfo.cabins.${index}.cabinType`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Cabin Type</FormLabel>
@@ -352,7 +352,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
 
                       <FormField
                         control={form.control}
-                        name={`bundlePackageRules.cabinInfo.cabins.${index}.additonalCost`}
+                        name={`rules.cabinInfo.cabins.${index}.additonalCost`}
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Additional Cost</FormLabel>
@@ -382,7 +382,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
 
                       <FormField
                         control={form.control}
-                        name={`bundlePackageRules.cabinInfo.cabins.${index}.isIncluded`}
+                        name={`rules.cabinInfo.cabins.${index}.isIncluded`}
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
                             <div className="space-y-0.5">

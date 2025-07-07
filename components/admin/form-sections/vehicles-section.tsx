@@ -44,13 +44,9 @@ interface VehiclesSectionProps {
 }
 
 export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
-  const watchCarLocked = form.watch("bundlePackageRules.vehicles.car.locked");
-  const watchMotorcycleLocked = form.watch(
-    "bundlePackageRules.vehicles.motorcycle.locked"
-  );
-  const watchBikesLocked = form.watch(
-    "bundlePackageRules.vehicles.bikes.locked"
-  );
+  const watchCarLocked = form.watch("rules.vehicles.car.locked");
+  const watchMotorcycleLocked = form.watch("rules.vehicles.motorcycle.locked");
+  const watchBikesLocked = form.watch("rules.vehicles.bikes.locked");
 
   const carCategories = referenceData.vehicleCategories.filter(
     (cat) => cat.code === "VEHICLE"
@@ -74,7 +70,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.vehicles.car.locked"
+            name="rules.vehicles.car.locked"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -97,7 +93,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
             <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="bundlePackageRules.vehicles.car.value"
+                name="rules.vehicles.car.value"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Default Car Value</FormLabel>
@@ -129,7 +125,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                     <FormField
                       key={`car-${category._id}`}
                       control={form.control}
-                      name="bundlePackageRules.vehicles.car.vehicleCategories"
+                      name="rules.vehicles.car.vehicleCategories"
                       render={({ field }) => {
                         const isChecked =
                           field.value?.some(
@@ -190,7 +186,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.vehicles.motorcycle.locked"
+            name="rules.vehicles.motorcycle.locked"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -215,7 +211,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
             <div className="space-y-4">
               <FormField
                 control={form.control}
-                name="bundlePackageRules.vehicles.motorcycle.value"
+                name="rules.vehicles.motorcycle.value"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Default Motorcycle Value</FormLabel>
@@ -251,7 +247,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                     <FormField
                       key={`mc-${category._id}`}
                       control={form.control}
-                      name="bundlePackageRules.vehicles.motorcycle.vehicleCategories"
+                      name="rules.vehicles.motorcycle.vehicleCategories"
                       render={({ field }) => {
                         const isChecked =
                           field.value?.some(
@@ -310,7 +306,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.vehicles.bikes.locked"
+            name="rules.vehicles.bikes.locked"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -334,7 +330,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
           {!watchBikesLocked && (
             <FormField
               control={form.control}
-              name="bundlePackageRules.vehicles.bikes.value"
+              name="rules.vehicles.bikes.value"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Default Bicycle Value</FormLabel>

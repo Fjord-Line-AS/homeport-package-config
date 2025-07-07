@@ -28,13 +28,13 @@ export function PersonConfigurationSection({
   form,
 }: PersonConfigurationSectionProps) {
   const watchRoomLocked = form.watch(
-    "bundlePackageRules.personConfiguration.roomQuantity.locked"
+    "rules.personConfiguration.roomQuantity.locked"
   );
   const watchAdultsLocked = form.watch(
-    "bundlePackageRules.personConfiguration.adults.locked"
+    "rules.personConfiguration.adults.locked"
   );
   const watchChildrenLocked = form.watch(
-    "bundlePackageRules.personConfiguration.children.locked"
+    "rules.personConfiguration.children.locked"
   );
 
   return (
@@ -51,7 +51,7 @@ export function PersonConfigurationSection({
           <div className="grid gap-4 md:grid-cols-2">
             <FormField
               control={form.control}
-              name="bundlePackageRules.personConfiguration.minTotalTravelers"
+              name="rules.personConfiguration.minTotalTravelers"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Minimum Total Travelers</FormLabel>
@@ -79,7 +79,7 @@ export function PersonConfigurationSection({
 
             <FormField
               control={form.control}
-              name="bundlePackageRules.personConfiguration.maxTotalTravelers"
+              name="rules.personConfiguration.maxTotalTravelers"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Maximum Total Travelers</FormLabel>
@@ -117,7 +117,7 @@ export function PersonConfigurationSection({
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.personConfiguration.roomQuantity.locked"
+            name="rules.personConfiguration.roomQuantity.locked"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -142,7 +142,7 @@ export function PersonConfigurationSection({
             <div className="grid gap-4 md:grid-cols-2">
               <FormField
                 control={form.control}
-                name="bundlePackageRules.personConfiguration.roomQuantity.minQuantity"
+                name="rules.personConfiguration.roomQuantity.minQuantity"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Minimum Rooms</FormLabel>
@@ -170,7 +170,7 @@ export function PersonConfigurationSection({
 
               <FormField
                 control={form.control}
-                name="bundlePackageRules.personConfiguration.roomQuantity.maxQuantity"
+                name="rules.personConfiguration.roomQuantity.maxQuantity"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Maximum Rooms</FormLabel>
@@ -209,7 +209,7 @@ export function PersonConfigurationSection({
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.personConfiguration.adults.locked"
+            name="rules.personConfiguration.adults.locked"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -234,7 +234,7 @@ export function PersonConfigurationSection({
             <div className="grid gap-4 md:grid-cols-3">
               <FormField
                 control={form.control}
-                name="bundlePackageRules.personConfiguration.adults.minQuantity"
+                name="rules.personConfiguration.adults.minQuantity"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Minimum Adults</FormLabel>
@@ -260,7 +260,7 @@ export function PersonConfigurationSection({
 
               <FormField
                 control={form.control}
-                name="bundlePackageRules.personConfiguration.adults.maxQuantity"
+                name="rules.personConfiguration.adults.maxQuantity"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Maximum Adults</FormLabel>
@@ -286,7 +286,7 @@ export function PersonConfigurationSection({
 
               <FormField
                 control={form.control}
-                name="bundlePackageRules.personConfiguration.adults.preSelectedValue"
+                name="rules.personConfiguration.adults.preSelectedValue"
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Pre-selected Value</FormLabel>
@@ -325,7 +325,7 @@ export function PersonConfigurationSection({
         <CardContent className="space-y-4">
           <FormField
             control={form.control}
-            name="bundlePackageRules.personConfiguration.children.locked"
+            name="rules.personConfiguration.children.locked"
             render={({ field }) => (
               <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
                 <div className="space-y-0.5">
@@ -351,7 +351,7 @@ export function PersonConfigurationSection({
               <div className="grid gap-4 md:grid-cols-2">
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.personConfiguration.children.minAge"
+                  name="rules.personConfiguration.children.minAge"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Minimum Age</FormLabel>
@@ -380,7 +380,7 @@ export function PersonConfigurationSection({
 
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.personConfiguration.children.maxAge"
+                  name="rules.personConfiguration.children.maxAge"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Maximum Age</FormLabel>
@@ -411,7 +411,7 @@ export function PersonConfigurationSection({
               <div className="grid gap-4 md:grid-cols-3">
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.personConfiguration.children.minQuantity"
+                  name="rules.personConfiguration.children.minQuantity"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Minimum Children</FormLabel>
@@ -439,7 +439,7 @@ export function PersonConfigurationSection({
 
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.personConfiguration.children.maxQuantity"
+                  name="rules.personConfiguration.children.maxQuantity"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Maximum Children</FormLabel>
@@ -467,7 +467,7 @@ export function PersonConfigurationSection({
 
                 <FormField
                   control={form.control}
-                  name="bundlePackageRules.personConfiguration.children.preSelectedValue"
+                  name="rules.personConfiguration.children.preSelectedValue"
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Pre-selected Value</FormLabel>

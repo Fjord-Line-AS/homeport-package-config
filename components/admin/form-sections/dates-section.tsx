@@ -38,7 +38,7 @@ export function DatesSection({ form }: DatesSectionProps) {
         <div className="grid gap-4 md:grid-cols-2">
           <FormField
             control={form.control}
-            name="bundlePackageRules.journeyDuration"
+            name="rules.journeyDuration"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Journey Duration (hours)</FormLabel>
@@ -68,7 +68,7 @@ export function DatesSection({ form }: DatesSectionProps) {
 
           <FormField
             control={form.control}
-            name="bundlePackageRules.daysAshore"
+            name="rules.daysAshore"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>Days Ashore</FormLabel>
@@ -107,7 +107,7 @@ export function DatesSection({ form }: DatesSectionProps) {
             <FormField
               key={day.key}
               control={form.control}
-              name={"bundlePackageRules"}
+              name={"rules"}
               render={({ field }) => (
                 <FormItem className="flex flex-row items-start space-x-3 space-y-0">
                   <FormControl>
@@ -132,7 +132,7 @@ export function DatesSection({ form }: DatesSectionProps) {
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.dates.outbound.date"
+          name="rules.dates.outbound.date"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Outbound Date (Optional)</FormLabel>
@@ -147,7 +147,7 @@ export function DatesSection({ form }: DatesSectionProps) {
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.dates.outbound.locked"
+          name="rules.dates.outbound.locked"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">
@@ -168,7 +168,7 @@ export function DatesSection({ form }: DatesSectionProps) {
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.dates.inbound.date"
+          name="rules.dates.inbound.date"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Inbound Date (Optional)</FormLabel>
@@ -183,7 +183,7 @@ export function DatesSection({ form }: DatesSectionProps) {
 
         <FormField
           control={form.control}
-          name="bundlePackageRules.dates.inbound.locked"
+          name="rules.dates.inbound.locked"
           render={({ field }) => (
             <FormItem className="flex flex-row items-center justify-between rounded-lg border p-4">
               <div className="space-y-0.5">

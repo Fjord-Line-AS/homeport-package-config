@@ -186,12 +186,12 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
       ? {
           name: rule.name,
           description: rule.description || "",
-          bundlePackageRules: rule.rules,
+          rules: rule.rules,
         }
       : {
           name: "",
           description: "",
-          bundlePackageRules: {
+          rules: {
             journeyType: "RETURN",
             ports: {
               availablePortsFrom: [],
