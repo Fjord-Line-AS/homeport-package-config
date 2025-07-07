@@ -140,7 +140,7 @@ function validateDates(formData: PackageRuleFormData): ValidationSection {
   const errors = [];
 
   // Check if at least one weekday is selected
-  const weekdays = formData.rules?.weekdays;
+  const weekdays = formData.rules?.dates?.weekdays;
   if (weekdays && weekdays.length > 0) {
     completedFields.push("rules.weekdays");
   } else {
@@ -286,32 +286,37 @@ function validateCabins(formData: PackageRuleFormData): ValidationSection {
 function validateAccommodation(
   formData: PackageRuleFormData
 ): ValidationSection {
-  // Accommodation is optional, but if configured, it should be valid
-  const requiredFields: string[] = [];
-  const completedFields = [];
-  const errors = [];
+  const requiredFields: string[] = ["rules.accommodationInfo.accommodations"];
+  const completedFields: string[] = [];
+  const errors: string[] = [];
 
-  // Check if accommodation configurations exist
-  if (
-    formData.rules?.accommodationInfo?.accommodations &&
-    formData.rules.accommodationInfo.accommodations.length > 0
-  ) {
+  const accommodations = formData.rules?.accommodationInfo?.accommodations;
+
+  if (accommodations?.length) {
     completedFields.push("rules.accommodationInfo.accommodations");
+    requiredFields.push(
+      "rules.accommodationInfo.accommodations[].accommodationType"
+    );
 
-    // Check if all accommodation configurations have an accommodation type
-    const invalidAccommodations =
-      formData.rules.accommodationInfo.accommodations.filter(
-        (acc) => !acc.accommodationType || !acc.accommodationType._ref
-      );
+    const invalidAccommodations = accommodations.filter(
+      (acc) => !acc.accommodationType || !acc.accommodationType._ref
+    );
+
     if (invalidAccommodations.length > 0) {
       errors.push(
         `${invalidAccommodations.length} accommodation(s) are missing an accommodation type`
       );
+    } else {
+      completedFields.push(
+        "rules.accommodationInfo.accommodations[].accommodationType"
+      );
     }
+  } else {
+    errors.push("At least one accommodation must be configured");
   }
 
-  let status: ValidationSection["status"] = "complete"; // Default to complete since accommodation is optional
-  if (errors.length > 0) status = "error";
+  const status: ValidationSection["status"] =
+    errors.length > 0 ? "error" : "complete";
 
   return {
     id: "accommodation",

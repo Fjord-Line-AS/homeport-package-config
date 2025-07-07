@@ -14,6 +14,7 @@ import { Badge } from "@/components/ui/badge";
 import { PackageRulesSearch } from "@/components/admin/package-rules-search";
 import { PackageRule_v2 } from "@fjordline/sanity-types";
 import { sanityFetch } from "@/lib/sanity/live";
+import { PackageRulesListClient } from "@/components/admin/package-rules-list";
 
 export async function getPackageRules(): Promise<PackageRule_v2[]> {
   const sanityFetchConfig = {
@@ -26,121 +27,8 @@ export async function getPackageRules(): Promise<PackageRule_v2[]> {
   return res.data;
 }
 
-async function PackageRulesList() {
+export default async function PackageRulesPage() {
   const packages = await getPackageRules();
-
-  return (
-    <div className="grid gap-6">
-      {packages.map((pck, index) => (
-        <Card
-          key={pck._id}
-          className="group hover:shadow-brand-lg transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002]"
-          style={{ animationDelay: `${index * 100}ms` }}
-        >
-          <div className="absolute inset-0 bg-gradient-to-r from-brand-seashell-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-
-          <CardHeader className="relative pb-3">
-            <div className="flex items-start justify-between">
-              <div className="flex items-start gap-4">
-                <div className="p-3 bg-gradient-to-r from-brand-red-500 to-brand-red-600 rounded-xl shadow-lg">
-                  <Package className="h-6 w-6 text-white" />
-                </div>
-                <div>
-                  <CardTitle className="text-xl text-brand-night-900 group-hover:text-brand-red-700 transition-colors">
-                    {pck.name}
-                  </CardTitle>
-                  {pck.description && (
-                    <CardDescription className="mt-2 text-brand-night-600 leading-relaxed">
-                      {pck.description}
-                    </CardDescription>
-                  )}
-                </div>
-              </div>
-
-              {pck?.rules && (
-                <div className="flex flex-wrap gap-2">
-                  {pck.rules.journeyType && (
-                    <Badge
-                      variant="outline"
-                      className="border-brand-ocean-200 text-brand-ocean-700 bg-brand-ocean-50 hover:bg-brand-ocean-100 transition-colors"
-                    >
-                      {pck.rules.journeyType}
-                    </Badge>
-                  )}
-                  {pck.rules.cabinInfo?.cabins &&
-                  pck.rules.cabinInfo.cabins.length > 0 ? (
-                    <Badge
-                      variant="default"
-                      className="bg-gradient-to-r from-brand-glow-800 to-brand-glow-900 text-white border-0 shadow-sm"
-                    >
-                      ✓ Cabins Configured
-                    </Badge>
-                  ) : (
-                    <Badge
-                      variant="secondary"
-                      className="bg-brand-night-100 text-brand-night-700 border-brand-night-200"
-                    >
-                      No Cabin Config
-                    </Badge>
-                  )}
-                </div>
-              )}
-            </div>
-          </CardHeader>
-
-          <CardContent className="relative pt-0">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-              <div className="flex items-center gap-2 text-sm text-brand-night-600">
-                <Users className="h-4 w-4 text-brand-ocean-500" />
-                {pck?.rules && (
-                  <span>
-                    {pck.rules.personConfiguration?.minTotalTravelers || 0}-
-                    {pck.rules.personConfiguration?.maxTotalTravelers || "∞"}{" "}
-                    travelers
-                  </span>
-                )}
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-brand-night-600">
-                <Clock className="h-4 w-4 text-brand-glow-600" />
-                <span>
-                  {pck?.rules ? pck.rules.journeyDuration : "Not set"} hours
-                </span>
-              </div>
-
-              <div className="flex items-center gap-2 text-sm text-brand-night-600">
-                <TrendingUp className="h-4 w-4 text-brand-red-500" />
-                <span>
-                  Updated {new Date(pck._updatedAt).toLocaleDateString()}
-                </span>
-              </div>
-            </div>
-
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <div className="h-2 w-2 rounded-full bg-brand-ocean-500" />
-                <span className="text-xs text-brand-night-500">
-                  Active Rule
-                </span>
-              </div>
-
-              <Button
-                asChild
-                variant="outline"
-                size="sm"
-                className="border-brand-red-200 text-brand-red-700 hover:bg-brand-red-50 hover:border-brand-red-300 transition-all duration-200 group-hover:shadow-md"
-              >
-                <Link href={`/admin/package-rules/${pck._id}`}>Edit Rule</Link>
-              </Button>
-            </div>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  );
-}
-
-export default function PackageRulesPage() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-night-100">
       {/* Beautiful Header */}
@@ -211,7 +99,7 @@ export default function PackageRulesPage() {
             </div>
           }
         >
-          <PackageRulesList />
+          <PackageRulesListClient packages={packages} />
         </Suspense>
       </div>
     </div>

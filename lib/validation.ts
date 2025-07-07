@@ -53,21 +53,22 @@ export const packageRuleSchema = z.object({
             locked: z.boolean().optional(),
           })
           .optional(),
+        weekdays: z
+          .array(
+            z.enum([
+              "monday",
+              "tuesday",
+              "wednesday",
+              "thursday",
+              "friday",
+              "saturday",
+              "sunday",
+            ])
+          )
+          .optional(),
       })
       .optional(),
-    weekdays: z
-      .array(
-        z.enum([
-          "monday",
-          "tuesday",
-          "wednesday",
-          "thursday",
-          "friday",
-          "saturday",
-          "sunday",
-        ])
-      )
-      .optional(),
+
     journeyDuration: z.number().min(0).optional(),
     daysAshore: z.number().min(0).optional(),
     personConfiguration: z

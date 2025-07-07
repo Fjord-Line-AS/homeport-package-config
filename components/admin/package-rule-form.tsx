@@ -64,6 +64,13 @@ import { VehiclesSection } from "./form-sections/vehicles-section";
 import { CabinsSection } from "./form-sections/cabins-section";
 import { AccommodationSection } from "./form-sections/accommodation-section";
 
+import {
+  getPackageRuleDraft,
+  clearPackageRuleDraft,
+} from "@/lib/drafts/package-rule-draft";
+
+import { usePackageRuleDraftWatcher } from "@/hooks/use-package-rule-draft-watcher";
+
 interface ReferenceData {
   ports: Port[];
   shipProductCodes: ShipProductCode[];
@@ -180,82 +187,97 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const ruleId = rule?._id ?? "new";
+  const initialDraft =
+    typeof window !== "undefined" ? getPackageRuleDraft(ruleId) : null;
+
   const form = useForm<PackageRuleFormData>({
     resolver: zodResolver(packageRuleSchema),
-    defaultValues: rule?.rules
-      ? {
-          name: rule.name,
-          description: rule.description || "",
-          rules: rule.rules,
-        }
-      : {
-          name: "",
-          description: "",
-          rules: {
-            journeyType: "RETURN",
-            ports: {
-              availablePortsFrom: [],
-              availablePortsTo: [],
-              allowDifferentReturn: false,
-            },
-            dates: {
-              outbound: {
-                locked: false,
+    defaultValues:
+      initialDraft ??
+      (rule?.rules
+        ? {
+            name: rule.name,
+            description: rule.description || "",
+            rules: rule.rules,
+          }
+        : {
+            name: "",
+            description: "",
+            rules: {
+              journeyType: "RETURN",
+              ports: {
+                availablePortsFrom: [],
+                availablePortsTo: [],
+                allowDifferentReturn: false,
               },
-              inbound: {
-                locked: false,
+              dates: {
+                outbound: {
+                  locked: false,
+                },
+                inbound: {
+                  locked: false,
+                },
+                weekdays: [
+                  "monday",
+                  "tuesday",
+                  "wednesday",
+                  "thursday",
+                  "friday",
+                ],
               },
-            },
-            weekdays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
-            personConfiguration: {
-              minTotalTravelers: 1,
-              roomQuantity: {
-                minQuantity: 1,
-                locked: false,
+
+              personConfiguration: {
+                minTotalTravelers: 1,
+                roomQuantity: {
+                  minQuantity: 1,
+                  locked: false,
+                },
+                adults: {
+                  minQuantity: 1,
+                  locked: false,
+                },
+                children: {
+                  minQuantity: 0,
+                  maxAge: 16,
+                  locked: false,
+                },
               },
-              adults: {
-                minQuantity: 1,
-                locked: false,
+              vehicles: {
+                car: {
+                  vehicleCategories: [],
+                  value: 0,
+                  locked: false,
+                },
+                motorcycle: {
+                  vehicleCategories: [],
+                  value: 0,
+                  locked: false,
+                },
+                bikes: {
+                  value: 0,
+                  locked: false,
+                },
               },
-              children: {
-                minQuantity: 0,
-                maxAge: 16,
-                locked: false,
-              },
-            },
-            vehicles: {
-              car: {
-                vehicleCategories: [],
-                value: 0,
-                locked: false,
-              },
-              motorcycle: {
-                vehicleCategories: [],
-                value: 0,
-                locked: false,
-              },
-              bikes: {
-                value: 0,
-                locked: false,
-              },
-            },
-            allowedVesselsForDeparture: [],
-            cabinInfo: {
-              outbound: {
+              allowedVesselsForDeparture: [],
+              cabinInfo: {
+                outbound: {
+                  cabins: [],
+                },
+                inbound: {
+                  cabins: [],
+                },
                 cabins: [],
               },
-              inbound: {
-                cabins: [],
+              accommodationInfo: {
+                accommodations: [],
               },
-              cabins: [],
             },
-            accommodationInfo: {
-              accommodations: [],
-            },
-          },
-        },
+          }),
     mode: "onChange",
   });
+
+  usePackageRuleDraftWatcher(ruleId, form);
 
   // Watch form values and update validation
   useEffect(() => {
@@ -279,6 +301,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     return () => subscription.unsubscribe();
   }, [form]);
 
+  // TODO: Hook up to sanity api
   const onSubmit = async (data: PackageRuleFormData) => {
     setIsLoading(true);
     try {
@@ -286,20 +309,21 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
         await updatePackageRule(rule._id, data);
         toast({
           title: "Rule updated",
-          description: "Package rule has been successfully updated.",
+          description: "Your changes have been saved.",
         });
       } else {
         await createPackageRule(data);
         toast({
           title: "Rule created",
-          description: "Package rule has been successfully created.",
+          description: "New package rule has been created.",
         });
         router.push("/admin/package-rules");
       }
-    } catch (error) {
+      clearPackageRuleDraft(ruleId); // Clear draft after successful save
+    } catch (err) {
       toast({
         title: "Error",
-        description: "Failed to save package rule. Please try again.",
+        description: "Failed to save rule",
         variant: "destructive",
       });
     } finally {

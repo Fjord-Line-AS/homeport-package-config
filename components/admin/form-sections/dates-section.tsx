@@ -103,26 +103,34 @@ export function DatesSection({ form }: DatesSectionProps) {
         </p>
 
         <div className="grid gap-3 md:grid-cols-4">
-          {weekdays.map((day) => (
-            <FormField
-              key={day.key}
-              control={form.control}
-              name={"rules"}
-              render={({ field }) => (
-                <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                  <FormControl>
-                    <Checkbox
-                      checked={!!field.value}
-                      onCheckedChange={field.onChange}
-                    />
-                  </FormControl>
-                  <FormLabel className="text-sm font-normal">
-                    {day.label}
-                  </FormLabel>
-                </FormItem>
-              )}
-            />
-          ))}
+          {weekdays.map((day) => {
+            const selected = form.watch("rules.dates.weekdays") || [];
+
+            return (
+              <div key={day.key} className="flex items-start space-x-3">
+                <Checkbox
+                  id={day.key}
+                  checked={selected.includes(day.key)}
+                  onCheckedChange={(checked) => {
+                    const next = checked
+                      ? [...selected, day.key]
+                      : selected.filter((d) => d !== day.key);
+                    form.setValue("rules.dates.weekdays", next, {
+                      shouldDirty: true,
+                      shouldTouch: true,
+                      shouldValidate: true,
+                    });
+                  }}
+                />
+                <label
+                  htmlFor={day.key}
+                  className="text-sm font-normal leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  {day.label}
+                </label>
+              </div>
+            );
+          })}
         </div>
       </div>
 
