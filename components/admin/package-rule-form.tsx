@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -72,6 +72,7 @@ import { updatePackageRule } from "@/app/actions/packageRules/updatePackageRule"
 import { createPackageRule } from "@/app/actions/packageRules/createPackageRule";
 import { mapFormDataToSanityDoc } from "@/lib/transform/formToSanity";
 import { toast } from "sonner";
+import { skip } from "node:test";
 
 interface ReferenceData {
   ports: Port[];
@@ -188,6 +189,8 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
+  const skipNextDraftWrite = useRef(false);
+
   const ruleId = rule?._id ?? "new";
   const initialDraft =
     typeof window !== "undefined" ? getPackageRuleDraft(ruleId) : null;
@@ -278,7 +281,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     mode: "onChange",
   });
 
-  usePackageRuleDraftWatcher(ruleId, form);
+  usePackageRuleDraftWatcher(ruleId, form, skipNextDraftWrite);
 
   // Watch form values and update validation
   useEffect(() => {
@@ -309,6 +312,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     try {
       if (rule) {
         await updatePackageRule(rule._id, newDoc);
+        skipNextDraftWrite.current = true; // Skip next draft write
         toast("Rule updated", {
           description: "Your changes have been saved.",
         });

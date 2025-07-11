@@ -14,6 +14,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { PackageRule_v2 } from "@fjordline/sanity-types";
 import type { PackageRuleFormData } from "@/lib/validation";
+import { DeleteRuleButton } from "./package-rules/actions/DeleteRuleButton";
+import EditRuleButton from "./package-rules/actions/EditRuleButton";
 
 interface Props {
   packages: PackageRule_v2[];
@@ -67,7 +69,7 @@ export function PackageRulesListClient({ packages }: Props) {
         return (
           <Card
             key={pck._id}
-            className="group hover:shadow-brand-lg transition-all duration-300 border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002]"
+            className="group  border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002]"
           >
             <CardHeader className="relative pb-3">
               <div className="flex items-start justify-between">
@@ -134,16 +136,10 @@ export function PackageRulesListClient({ packages }: Props) {
                   </span>
                 </div>
 
-                <Button
-                  asChild
-                  variant="outline"
-                  size="sm"
-                  className="border-brand-red-200 text-brand-red-700 hover:bg-brand-red-50 hover:border-brand-red-300 transition-all duration-200 group-hover:shadow-md"
-                >
-                  <Link href={`/admin/package-rules/${pck._id}`}>
-                    Edit Rule
-                  </Link>
-                </Button>
+                <div id="action-buttons" className="flex items-center gap-2">
+                  <EditRuleButton ruleId={pck._id} />
+                  <DeleteRuleButton ruleId={pck._id} />
+                </div>
               </div>
             </CardContent>
           </Card>

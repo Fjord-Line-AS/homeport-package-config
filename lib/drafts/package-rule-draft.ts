@@ -11,7 +11,5 @@ export function getPackageRuleDraft(id: string): PackageRuleFormData | null {
 }
 
 export function clearPackageRuleDraft(id: string) {
-  if (typeof window !== "undefined") {
-    localStorage.removeItem(`draft:package-rule:${id}`);
-  }
+  localStorage.removeItem(`draft:package-rule:${id}`);
 }

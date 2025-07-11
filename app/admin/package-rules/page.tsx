@@ -1,37 +1,16 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Plus, Package, TrendingUp, Clock, Users } from "lucide-react";
-
+import { Plus, Package } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PackageRulesSearch } from "@/components/admin/package-rules-search";
-import { PackageRule_v2 } from "@fjordline/sanity-types";
-import { sanityFetch } from "@/lib/sanity/live";
 import { PackageRulesListClient } from "@/components/admin/package-rules-list";
-
-export async function getPackageRules(): Promise<PackageRule_v2[]> {
-  const sanityFetchConfig = {
-    query: `*[_type == "packageRule_v2"] | order(_updatedAt desc)`,
-  };
-  const res = await sanityFetch(sanityFetchConfig);
-  if (!res || !Array.isArray(res.data)) {
-    throw new Error("Failed to fetch package rules");
-  }
-  return res.data;
-}
+import { getPackageRules } from "@/app/actions/packageRules/getPackageRules";
 
 export default async function PackageRulesPage() {
   const packages = await getPackageRules();
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-night-100">
-      {/* Beautiful Header */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-brand-red-600  to-brand-red-700 opacity-90" />
         <div className="absolute inset-0 opacity-10">
