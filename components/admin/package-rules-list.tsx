@@ -28,7 +28,7 @@ export function PackageRulesListClient({ packages }: Props) {
     packages.forEach((pkg) => {
       const key = `draft:package-rule:${pkg._id}`;
       try {
-        const raw = sessionStorage.getItem(key);
+        const raw = localStorage.getItem(key);
         if (raw) {
           map[pkg._id] = JSON.parse(raw);
         }

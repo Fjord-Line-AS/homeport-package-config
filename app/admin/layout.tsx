@@ -2,6 +2,7 @@ import type React from "react";
 import { Sidebar } from "@/components/admin/sidebar";
 import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
 import { SanityLive } from "@/lib/sanity/live";
+import { Toaster } from "@/components/ui/sonner";
 import "../globals.css";
 
 export default function AdminLayout({
@@ -11,6 +12,7 @@ export default function AdminLayout({
 }) {
   return (
     <SidebarProvider>
+      <Toaster />
       <SanityLive />
       <div className="flex min-h-screen w-full">
         <Sidebar />

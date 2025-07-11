@@ -38,7 +38,6 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
-import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
 import {
   Accommodation_v2,
@@ -50,7 +49,6 @@ import {
   ShipProductCode,
 } from "@fjordline/sanity-types";
 import { packageRuleSchema, type PackageRuleFormData } from "@/lib/validation";
-import { updatePackageRule, createPackageRule } from "@/lib/sanity-mock";
 import {
   validatePackageRule,
   type ValidationSummary,
@@ -70,6 +68,10 @@ import {
 } from "@/lib/drafts/package-rule-draft";
 
 import { usePackageRuleDraftWatcher } from "@/hooks/use-package-rule-draft-watcher";
+import { updatePackageRule } from "@/app/actions/packageRules/updatePackageRule";
+import { createPackageRule } from "@/app/actions/packageRules/createPackageRule";
+import { mapFormDataToSanityDoc } from "@/lib/transform/formToSanity";
+import { toast } from "sonner";
 
 interface ReferenceData {
   ports: Port[];
@@ -181,7 +183,6 @@ const tabs = [
 
 export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   const router = useRouter();
-  const { toast } = useToast();
   const [activeTab, setActiveTab] = useState("journey");
   const [isLoading, setIsLoading] = useState(false);
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
@@ -218,14 +219,14 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
                 inbound: {
                   locked: false,
                 },
-                weekdays: [
-                  "monday",
-                  "tuesday",
-                  "wednesday",
-                  "thursday",
-                  "friday",
-                ],
               },
+              weekdays: [
+                "monday",
+                "tuesday",
+                "wednesday",
+                "thursday",
+                "friday",
+              ],
 
               personConfiguration: {
                 minTotalTravelers: 1,
@@ -304,27 +305,25 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   // TODO: Hook up to sanity api
   const onSubmit = async (data: PackageRuleFormData) => {
     setIsLoading(true);
+    const newDoc = mapFormDataToSanityDoc(data);
     try {
       if (rule) {
-        await updatePackageRule(rule._id, data);
-        toast({
-          title: "Rule updated",
+        await updatePackageRule(rule._id, newDoc);
+        toast("Rule updated", {
           description: "Your changes have been saved.",
         });
       } else {
-        await createPackageRule(data);
-        toast({
-          title: "Rule created",
+        await createPackageRule(newDoc as PackageRule_v2);
+        toast("Rule created", {
           description: "New package rule has been created.",
         });
         router.push("/admin/package-rules");
       }
       clearPackageRuleDraft(ruleId); // Clear draft after successful save
     } catch (err) {
-      toast({
-        title: "Error",
+      toast("Error", {
         description: "Failed to save rule",
-        variant: "destructive",
+        className: "bg-red-500 text-white",
       });
     } finally {
       setIsLoading(false);

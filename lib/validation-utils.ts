@@ -63,7 +63,12 @@ export function validatePackageRule(
 }
 
 function validateBasicInfo(formData: PackageRuleFormData): ValidationSection {
-  const requiredFields = ["name", "rules.journeyType", "rules.packageCode"];
+  const requiredFields = [
+    "name",
+    "rules.journeyType",
+    "rules.packageCode",
+    "rules.productCode",
+  ];
   const completedFields = [];
   const errors = [];
 
@@ -72,6 +77,10 @@ function validateBasicInfo(formData: PackageRuleFormData): ValidationSection {
 
   if (formData.rules?.journeyType) completedFields.push("rules.journeyType");
   else errors.push("Journey type is required");
+
+  if (formData.rules?.productCode?._ref)
+    completedFields.push("rules.productCode");
+  else errors.push("Product code is required");
 
   if (formData.rules?.packageCode && formData.rules.packageCode.trim())
     completedFields.push("rules.packageCode");
@@ -140,7 +149,7 @@ function validateDates(formData: PackageRuleFormData): ValidationSection {
   const errors = [];
 
   // Check if at least one weekday is selected
-  const weekdays = formData.rules?.dates?.weekdays;
+  const weekdays = formData.rules?.weekdays;
   if (weekdays && weekdays.length > 0) {
     completedFields.push("rules.weekdays");
   } else {

@@ -10,7 +10,7 @@ export function usePackageRuleDraft(
   // Restore saved draft (on init only)
   const getInitialDraft = (): PackageRuleFormData | null => {
     if (typeof window === "undefined") return null;
-    const raw = sessionStorage.getItem(draftKey);
+    const raw = localStorage.getItem(draftKey);
     if (!raw) return null;
     try {
       return JSON.parse(raw);
@@ -22,14 +22,14 @@ export function usePackageRuleDraft(
   // Watch changes and persist them
   useEffect(() => {
     const subscription = form.watch((value: PackageRuleFormData) => {
-      sessionStorage.setItem(draftKey, JSON.stringify(value));
+      localStorage.setItem(draftKey, JSON.stringify(value));
     });
     return () => subscription.unsubscribe();
   }, [form, draftKey]);
 
   const clearDraft = () => {
     if (typeof window !== "undefined") {
-      sessionStorage.removeItem(draftKey);
+      localStorage.removeItem(draftKey);
     }
   };
 

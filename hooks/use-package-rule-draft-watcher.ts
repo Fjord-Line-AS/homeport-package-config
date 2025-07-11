@@ -7,7 +7,7 @@ export function usePackageRuleDraftWatcher(id: string, form: { watch: any }) {
 
     const subscription = form.watch((value: PackageRuleFormData) => {
       try {
-        sessionStorage.setItem(draftKey, JSON.stringify(value));
+        localStorage.setItem(draftKey, JSON.stringify(value));
       } catch (err) {
         console.error("Failed to save draft", err);
       }

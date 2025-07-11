@@ -104,7 +104,7 @@ export function DatesSection({ form }: DatesSectionProps) {
 
         <div className="grid gap-3 md:grid-cols-4">
           {weekdays.map((day) => {
-            const selected = form.watch("rules.dates.weekdays") || [];
+            const selected = form.watch("rules.weekdays") || [];
 
             return (
               <div key={day.key} className="flex items-start space-x-3">
@@ -115,7 +115,7 @@ export function DatesSection({ form }: DatesSectionProps) {
                     const next = checked
                       ? [...selected, day.key]
                       : selected.filter((d) => d !== day.key);
-                    form.setValue("rules.dates.weekdays", next, {
+                    form.setValue("rules.weekdays", next, {
                       shouldDirty: true,
                       shouldTouch: true,
                       shouldValidate: true,

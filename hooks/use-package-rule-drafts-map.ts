@@ -11,7 +11,7 @@ export function usePackageRuleDraftsMap(ids: string[]) {
 
     ids.forEach((id) => {
       try {
-        const raw = sessionStorage.getItem(`draft:package-rule:${id}`);
+        const raw = localStorage.getItem(`draft:package-rule:${id}`);
         if (raw) {
           const parsed = JSON.parse(raw) as PackageRuleFormData;
           map[id] = parsed;
