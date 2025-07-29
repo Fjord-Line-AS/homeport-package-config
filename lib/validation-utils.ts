@@ -1,11 +1,12 @@
+import { ValidPackageRulePath } from "@/types/zod/validPaths";
 import type { PackageRuleFormData } from "./validation";
 
 export type ValidationSection = {
   id: string;
   name: string;
   status: "complete" | "partial" | "incomplete" | "error";
-  requiredFields: string[];
-  completedFields: string[];
+  requiredFields: ValidPackageRulePath[];
+  completedFields: ValidPackageRulePath[];
   errors: string[];
 };
 
@@ -63,13 +64,13 @@ export function validatePackageRule(
 }
 
 function validateBasicInfo(formData: PackageRuleFormData): ValidationSection {
-  const requiredFields = [
+  const requiredFields: ValidPackageRulePath[] = [
     "name",
     "rules.journeyType",
     "rules.packageCode",
     "rules.productCode",
   ];
-  const completedFields = [];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
   if (formData.name && formData.name.trim()) completedFields.push("name");
@@ -104,11 +105,11 @@ function validateBasicInfo(formData: PackageRuleFormData): ValidationSection {
 function validatePortConfiguration(
   formData: PackageRuleFormData
 ): ValidationSection {
-  const requiredFields = [
+  const requiredFields: ValidPackageRulePath[] = [
     "rules.ports.defaultPortFrom",
     "rules.ports.defaultPortTo",
   ];
-  const completedFields = [];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
   if (formData.rules?.ports?.defaultPortFrom?._ref)
@@ -144,8 +145,8 @@ function validatePortConfiguration(
 }
 
 function validateDates(formData: PackageRuleFormData): ValidationSection {
-  const requiredFields = ["rules.weekdays"];
-  const completedFields = [];
+  const requiredFields: ValidPackageRulePath[] = ["rules.weekdays"];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
   // Check if at least one weekday is selected
@@ -162,8 +163,12 @@ function validateDates(formData: PackageRuleFormData): ValidationSection {
   }
 
   let status: ValidationSection["status"] = "incomplete";
-  if (completedFields.length === requiredFields.length) status = "complete";
-  else if (completedFields.length > 0) status = "partial";
+  if (completedFields.length >= requiredFields.length) status = "complete";
+  else if (
+    completedFields.length > 0 &&
+    completedFields.length < requiredFields.length
+  )
+    status = "partial";
   if (errors.length > 0) status = "error";
 
   return {
@@ -179,11 +184,11 @@ function validateDates(formData: PackageRuleFormData): ValidationSection {
 function validatePersonConfiguration(
   formData: PackageRuleFormData
 ): ValidationSection {
-  const requiredFields = [
+  const requiredFields: ValidPackageRulePath[] = [
     "rules.personConfiguration.minTotalTravelers",
     "rules.personConfiguration.adults.minQuantity",
   ];
-  const completedFields = [];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
   if (formData.rules?.personConfiguration?.minTotalTravelers) {
@@ -225,8 +230,8 @@ function validatePersonConfiguration(
 
 function validateVehicles(formData: PackageRuleFormData): ValidationSection {
   // Vehicles are optional, but if configured, they should be valid
-  const requiredFields: string[] = [];
-  const completedFields = [];
+  const requiredFields: ValidPackageRulePath[] = [];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
   // Check if car configuration is complete
@@ -259,8 +264,8 @@ function validateVehicles(formData: PackageRuleFormData): ValidationSection {
 
 function validateCabins(formData: PackageRuleFormData): ValidationSection {
   // Cabins are optional, but if configured, they should be valid
-  const requiredFields: string[] = [];
-  const completedFields = [];
+  const requiredFields: ValidPackageRulePath[] = [];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
   // Check if cabin configurations exist
@@ -295,8 +300,10 @@ function validateCabins(formData: PackageRuleFormData): ValidationSection {
 function validateAccommodation(
   formData: PackageRuleFormData
 ): ValidationSection {
-  const requiredFields: string[] = ["rules.accommodationInfo.accommodations"];
-  const completedFields: string[] = [];
+  const requiredFields: ValidPackageRulePath[] = [
+    "rules.accommodationInfo.accommodations",
+  ];
+  const completedFields: ValidPackageRulePath[] = [];
   const errors: string[] = [];
 
   const accommodations = formData.rules?.accommodationInfo?.accommodations;

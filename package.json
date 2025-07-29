@@ -1,6 +1,7 @@
 {
   "name": "pakkekonfigurering-client",
   "version": "0.1.0",
+  "type": "module",
   "author": {
     "name": "Nikolai Reed-Larsen",
     "email": "nikolai.reed-larsen@fjordline.com"
@@ -10,7 +11,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:paths": "tsx scripts/zod/generateValidPathsFromZod.ts"
   },
   "dependencies": {
     "@fjordline/sanity-types": "1.0.14724",
@@ -41,6 +43,7 @@
     "zod": "^3.25.51"
   },
   "devDependencies": {
+    "tsx": "^4.20.3",
     "@eslint/eslintrc": "^3.3.1",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/node": "^22.15.29",

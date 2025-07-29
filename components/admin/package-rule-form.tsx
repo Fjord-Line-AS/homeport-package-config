@@ -72,7 +72,6 @@ import { updatePackageRule } from "@/app/actions/packageRules/updatePackageRule"
 import { createPackageRule } from "@/app/actions/packageRules/createPackageRule";
 import { mapFormDataToSanityDoc } from "@/lib/transform/formToSanity";
 import { toast } from "sonner";
-import { skip } from "node:test";
 
 interface ReferenceData {
   ports: Port[];
@@ -305,7 +304,6 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     return () => subscription.unsubscribe();
   }, [form]);
 
-  // TODO: Hook up to sanity api
   const onSubmit = async (data: PackageRuleFormData) => {
     setIsLoading(true);
     const newDoc = mapFormDataToSanityDoc(data);
@@ -405,7 +403,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     : 0;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-seashell-100">
+    <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-seashell-100 ">
       {/* Subtle Header with Toned Down Gradient */}
       <div className="relative overflow-hidden">
         <div className="absolute inset-0 bg-gradient-to-r from-brand-ocean-600 to-brand-ocean-500" />
@@ -482,7 +480,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
         </div>
       </div>
 
-      <div className="px-8 -mt-4 relative z-20">
+      <div className="px-8 -mt-4 relative z-20 mb-8">
         {/* Fixed Progress Card */}
         {validation && (
           <motion.div
