@@ -15,10 +15,11 @@ This project is a rules-based configuration tool for travel packages. It enables
 
 **Tech stack**:
 
-- **Framework**: Next.js 14 (App Router)
+- **Framework**: Next.js 15 (App Router)
 - **CMS**: Sanity.io
 - **Validation**: Zod
 - **UI**: Tailwind CSS + custom components
+- **Form Management**: React Hook Form
 
 ---
 
@@ -54,6 +55,7 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 - Uses a tabbed layout for categories like journey, persons, dates, accommodation, etc.
 - Zod schema (`packageRuleSchema`) validates data per tab
 - Uses localStorage to persist drafts with automatic recovery
+- Drafts are synced to Sanity in real time using `useSanityDraftSync`
 
 ---
 
@@ -62,8 +64,9 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 - Server actions:
 
   - `createPackageRule()`
-  - `updatePackageRule()`
+  - `updatePackageRule()` (also deletes draft copy)
   - `deletePackageRule()`
+  - `savePackageRuleDraft()` (uses `createOrReplace` with `drafts.` prefix)
 
 - Server components handle Sanity reference data fetching
 - Real-time updates are optionally supported using Sanity’s hooks
@@ -80,8 +83,9 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 
 ### 7. **Draft System**
 
+- Drafts are written to Sanity under `drafts.` prefix with `createOrReplace`
 - LocalStorage stores in-progress rules as JSON
-- `usePackageRuleDraftWatcher` listens for unsaved changes
+- `useSanityDraftSync` ensures updates are pushed to Sanity during editing
 - Utilities:
 
   - `getPackageRuleDraft(id)`
@@ -95,6 +99,7 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 - Each tab has granular validation logic
 - Progress is calculated based on number of valid sections vs total
 - Errors are displayed as badges and sidebar messages
+- Validation is triggered by watching the form and calling `getValues()` on mount
 
 ---
 
@@ -117,24 +122,31 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 - **Create**:
 
   - New rule button → `PackageRuleForm`
-  - Draft stored in localStorage
+  - Draft stored in localStorage and synced to Sanity
   - Save triggers `createPackageRule()`
 
 - **Edit**:
 
   - Loads server data into form
-  - Auto-merges with draft if present
+  - Auto-merges with local draft if present
+  - Syncs changes to Sanity draft in real time
 
 - **Delete**:
 
   - Confirmation modal → `deletePackageRule()`
 
+- **Publish**:
+
+  - `updatePackageRule()` writes to published doc and deletes draft
+
 ---
 
 ### 11. **Known Issues / Gotchas**
 
-- After updating, the watcher may fire due to state mismatch, causing false drafts
-- Weekdays checkboxes sometimes don't reflect correct state on first render
-- Validation messages may mismatch display badges (especially for accommodation tab)
+- Validation didn't initially trigger without `getValues()` on mount
+- Weekdays checkboxes may not reflect correct state on first render
+- Removing accommodations or nested items sometimes didn't trigger revalidation
+- Form submission can get blocked if button types are incorrectly set
+- Validation state may fall out of sync if external state mutates the form
 
 ---
