@@ -62,16 +62,14 @@ import { VehiclesSection } from "./form-sections/vehicles-section";
 import { CabinsSection } from "./form-sections/cabins-section";
 import { AccommodationSection } from "./form-sections/accommodation-section";
 
-import {
-  getPackageRuleDraft,
-  clearPackageRuleDraft,
-} from "@/lib/drafts/package-rule-draft";
+import { clearPackageRuleDraft } from "@/lib/drafts/package-rule-draft";
 
-import { usePackageRuleDraftWatcher } from "@/hooks/use-package-rule-draft-watcher";
 import { updatePackageRule } from "@/app/actions/packageRules/updatePackageRule";
 import { createPackageRule } from "@/app/actions/packageRules/createPackageRule";
 import { mapFormDataToSanityDoc } from "@/lib/transform/formToSanity";
+
 import { toast } from "sonner";
+import { useSanityDraftSync } from "@/hooks/useSanityDraftSync";
 
 interface ReferenceData {
   ports: Port[];
@@ -188,121 +186,91 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  const skipNextDraftWrite = useRef(false);
-
   const ruleId = rule?._id ?? "new";
-  const initialDraft =
-    typeof window !== "undefined" ? getPackageRuleDraft(ruleId) : null;
 
   const form = useForm<PackageRuleFormData>({
     resolver: zodResolver(packageRuleSchema),
-    defaultValues:
-      initialDraft ??
-      (rule?.rules
-        ? {
-            name: rule.name,
-            description: rule.description || "",
-            rules: rule.rules,
-          }
-        : {
-            name: "",
-            description: "",
-            rules: {
-              journeyType: "RETURN",
-              ports: {
-                availablePortsFrom: [],
-                availablePortsTo: [],
-                allowDifferentReturn: false,
-              },
-              dates: {
-                outbound: {
-                  locked: false,
-                },
-                inbound: {
-                  locked: false,
-                },
-              },
-              weekdays: [
-                "monday",
-                "tuesday",
-                "wednesday",
-                "thursday",
-                "friday",
-              ],
-
-              personConfiguration: {
-                minTotalTravelers: 1,
-                roomQuantity: {
-                  minQuantity: 1,
-                  locked: false,
-                },
-                adults: {
-                  minQuantity: 1,
-                  locked: false,
-                },
-                children: {
-                  minQuantity: 0,
-                  maxAge: 16,
-                  locked: false,
-                },
-              },
-              vehicles: {
-                car: {
-                  vehicleCategories: [],
-                  value: 0,
-                  locked: false,
-                },
-                motorcycle: {
-                  vehicleCategories: [],
-                  value: 0,
-                  locked: false,
-                },
-                bikes: {
-                  value: 0,
-                  locked: false,
-                },
-              },
-              allowedVesselsForDeparture: [],
-              cabinInfo: {
-                outbound: {
-                  cabins: [],
-                },
-                inbound: {
-                  cabins: [],
-                },
-                cabins: [],
-              },
-              accommodationInfo: {
-                accommodations: [],
-              },
+    defaultValues: rule?.rules
+      ? {
+          name: rule.name,
+          description: rule.description || "",
+          rules: rule.rules,
+        }
+      : {
+          name: "",
+          description: "",
+          rules: {
+            journeyType: "RETURN",
+            ports: {
+              availablePortsFrom: [],
+              availablePortsTo: [],
+              allowDifferentReturn: false,
             },
-          }),
+            dates: {
+              outbound: { locked: false },
+              inbound: { locked: false },
+            },
+            weekdays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
+            personConfiguration: {
+              minTotalTravelers: 1,
+              roomQuantity: { minQuantity: 1, locked: false },
+              adults: { minQuantity: 1, locked: false },
+              children: { minQuantity: 0, maxAge: 16, locked: false },
+            },
+            vehicles: {
+              car: { vehicleCategories: [], value: 0, locked: false },
+              motorcycle: { vehicleCategories: [], value: 0, locked: false },
+              bikes: { value: 0, locked: false },
+            },
+            allowedVesselsForDeparture: [],
+            cabinInfo: {
+              outbound: { cabins: [] },
+              inbound: { cabins: [] },
+              cabins: [],
+            },
+            accommodationInfo: {
+              accommodations: [],
+            },
+          },
+        },
     mode: "onChange",
   });
 
-  usePackageRuleDraftWatcher(ruleId, form, skipNextDraftWrite);
-
   // Watch form values and update validation
   useEffect(() => {
+    // 🔥 Manual initial validation
+    try {
+      const initialValues = form.getValues();
+      setValidation(validatePackageRule(initialValues));
+      toast("Validation initialized", {
+        description: "Initial validation has been calculated.",
+        className: "!bg-green-500 !text-white",
+      });
+    } catch {
+      toast("Initial validation error", {
+        description: "Form has errors on load.",
+        className: "!bg-red-500 !text-white",
+      });
+      setValidation(null);
+    }
+
     const subscription = form.watch((value) => {
       try {
         setValidation(validatePackageRule(value as PackageRuleFormData));
-      } catch (error) {
-        console.error("Validation error:", error);
+      } catch {
+        toast("Validation error", {
+          description: "Please fix the errors in the form.",
+          className: "!bg-red-500 !text-white",
+        });
         setValidation(null);
       }
     });
 
-    // Initial validation
-    try {
-      setValidation(validatePackageRule(form.getValues()));
-    } catch (error) {
-      console.error("Initial validation error:", error);
-      setValidation(null);
-    }
-
     return () => subscription.unsubscribe();
   }, [form]);
+
+  // 🧠 Sync form state to Sanity
+  useSanityDraftSync(ruleId, form);
 
   const onSubmit = async (data: PackageRuleFormData) => {
     setIsLoading(true);
@@ -310,22 +278,24 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     try {
       if (rule) {
         await updatePackageRule(rule._id, newDoc);
-        skipNextDraftWrite.current = true; // Skip next draft write
         toast("Rule updated", {
           description: "Your changes have been saved.",
+          className: "!bg-green-500 !text-white",
         });
+        clearPackageRuleDraft(ruleId); // Clear draft after successful save
+        router.push("/admin/package-rules"); // 👈 redirect after save
       } else {
         await createPackageRule(newDoc as PackageRule_v2);
         toast("Rule created", {
           description: "New package rule has been created.",
         });
+        clearPackageRuleDraft(ruleId);
         router.push("/admin/package-rules");
       }
-      clearPackageRuleDraft(ruleId); // Clear draft after successful save
     } catch (err) {
       toast("Error", {
         description: "Failed to save rule",
-        className: "bg-red-500 text-white",
+        className: "!bg-red-500 !text-white",
       });
     } finally {
       setIsLoading(false);
@@ -468,12 +438,19 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
               </Button>
 
               <Button
+                type="submit"
                 onClick={form.handleSubmit(onSubmit)}
-                disabled={isLoading}
-                className="gap-2 bg-white text-brand-red-600 hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
+                disabled={
+                  isLoading || !form.formState.isValid || !validation?.isValid
+                }
+                className="cursor-pointer gap-2 bg-white text-brand-red-600 hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200"
               >
                 <Save className="h-4 w-4" />
-                {isLoading ? "Saving..." : "Save Rule"}
+                {isLoading
+                  ? "Saving..."
+                  : !validation?.isValid || !form.formState.isValid
+                  ? "Fix Validation Errors"
+                  : "Save Rule"}
               </Button>
             </div>
           </div>

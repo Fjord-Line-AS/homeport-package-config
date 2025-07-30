@@ -110,7 +110,11 @@ export function AccommodationSection({
                         Accommodation {index + 1}
                       </CardTitle>
                       <Button
-                        onClick={() => remove(index)}
+                        type="button"
+                        onClick={() => {
+                          remove(index);
+                          form.trigger(); // 👈 force re-validation
+                        }}
                         variant="ghost"
                         size="sm"
                         className="text-destructive hover:text-destructive"

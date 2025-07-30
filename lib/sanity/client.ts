@@ -26,6 +26,7 @@ const sanityClient = createClient({
 const sanityApiClient = createClient({
   ...sharedConfig,
   token: process.env.SANITY_TOKEN,
+  perspective: "drafts",
   stega: {
     studioUrl: "https://fjordline.sanity.studio",
   },

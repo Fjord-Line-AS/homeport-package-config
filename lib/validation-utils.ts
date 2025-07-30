@@ -264,7 +264,7 @@ function validateVehicles(formData: PackageRuleFormData): ValidationSection {
 
 function validateCabins(formData: PackageRuleFormData): ValidationSection {
   // Cabins are optional, but if configured, they should be valid
-  const requiredFields: ValidPackageRulePath[] = [];
+  const requiredFields: ValidPackageRulePath[] = ["rules.cabinInfo.cabins"];
   const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
 
@@ -282,6 +282,8 @@ function validateCabins(formData: PackageRuleFormData): ValidationSection {
     if (invalidCabins.length > 0) {
       errors.push(`${invalidCabins.length} cabin(s) are missing a cabin type`);
     }
+  } else {
+    errors.push("At least one cabin must be configured");
   }
 
   let status: ValidationSection["status"] = "complete"; // Default to complete since cabins are optional
@@ -302,6 +304,7 @@ function validateAccommodation(
 ): ValidationSection {
   const requiredFields: ValidPackageRulePath[] = [
     "rules.accommodationInfo.accommodations",
+    "rules.accommodationInfo.accommodations[].accommodationType",
   ];
   const completedFields: ValidPackageRulePath[] = [];
   const errors: string[] = [];
