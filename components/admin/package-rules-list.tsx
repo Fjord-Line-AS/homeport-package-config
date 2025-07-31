@@ -100,8 +100,11 @@ export function PackageRulesListClient({ packages }: Props) {
                 </div>
 
                 <div id="action-buttons" className="flex items-center gap-2">
-                  <EditRuleButton ruleId={pkg._originalId} />
-                  <DeleteRuleButton ruleId={pkg._originalId} />
+                  <EditRuleButton ruleId={pkg._originalId} isDraft={isDraft} />
+                  <DeleteRuleButton
+                    ruleId={pkg._originalId}
+                    isDraft={isDraft}
+                  />
                 </div>
               </div>
             </CardContent>

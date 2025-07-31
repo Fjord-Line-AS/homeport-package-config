@@ -3,6 +3,7 @@ import { debounce } from "lodash-es";
 import { type UseFormReturn } from "react-hook-form";
 import type { PackageRuleFormData } from "@/lib/validation";
 import { savePackageRuleDraft } from "@/app/actions/packageRules/savePackageRuleDraft";
+import { shouldSkipNextDraftWrite } from "@/lib/formSync";
 
 export function useSanityDraftSync(
   id: string,
@@ -15,7 +16,13 @@ export function useSanityDraftSync(
     if (!enabled || !id) return;
 
     const persistDraft = debounce((data: PackageRuleFormData) => {
+      if (shouldSkipNextDraftWrite()) {
+        console.log("[DraftSync] Skipping this write", data);
+        return;
+      }
+
       startTransition(() => {
+        console.log("[DraftSync] Writing to draft:", data);
         savePackageRuleDraft(id, data);
       });
     }, 400);

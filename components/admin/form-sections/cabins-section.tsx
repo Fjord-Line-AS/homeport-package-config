@@ -39,6 +39,7 @@ import {
   ShipCabin,
   ShipProductCode,
 } from "@fjordline/sanity-types";
+import { removeFieldArrayItem } from "@/lib/form/removeFieldArrayItem";
 
 interface ReferenceData {
   ports: Port[];
@@ -304,7 +305,13 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                         Cabin Configuration {index + 1}
                       </CardTitle>
                       <Button
-                        onClick={() => remove(index)}
+                        onClick={() => {
+                          removeFieldArrayItem(
+                            form,
+                            "rules.cabinInfo.cabins",
+                            index
+                          );
+                        }}
                         variant="ghost"
                         size="sm"
                         type="button"

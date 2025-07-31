@@ -6,7 +6,13 @@ import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
-export function DeleteRuleButton({ ruleId }: { ruleId: string }) {
+export function DeleteRuleButton({
+  ruleId,
+  isDraft,
+}: {
+  ruleId: string;
+  isDraft?: boolean;
+}) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -28,7 +34,7 @@ export function DeleteRuleButton({ ruleId }: { ruleId: string }) {
   return (
     <Button variant="destructive" onClick={handleDelete}>
       <Trash2 className="h-4 w-4 mr-2" />
-      Delete
+      {isDraft ? "Delete Draft" : "Delete"}
     </Button>
   );
 }

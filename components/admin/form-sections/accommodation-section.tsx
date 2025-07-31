@@ -38,6 +38,9 @@ import {
   ShipCabin,
   ShipProductCode,
 } from "@fjordline/sanity-types";
+import { setSkipNextDraftWrite } from "@/lib/formSync";
+import { set } from "zod";
+import { removeFieldArrayItem } from "@/lib/form/removeFieldArrayItem";
 
 interface ReferenceData {
   ports: Port[];
@@ -57,12 +60,13 @@ export function AccommodationSection({
   form,
   referenceData,
 }: AccommodationSectionProps) {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control: form.control,
     name: "rules.accommodationInfo.accommodations",
   });
 
   const addAccommodation = () => {
+    setSkipNextDraftWrite();
     append({
       additonalCost: 0,
       accommodationType: { _ref: "", _type: "reference" },
@@ -73,6 +77,7 @@ export function AccommodationSection({
       _type: "accommodation",
       _key: `accommodation-${Date.now()}`,
     });
+    setSkipNextDraftWrite();
   };
 
   return (
@@ -112,8 +117,11 @@ export function AccommodationSection({
                       <Button
                         type="button"
                         onClick={() => {
-                          remove(index);
-                          form.trigger(); // 👈 force re-validation
+                          removeFieldArrayItem(
+                            form,
+                            "rules.accommodationInfo.accommodations",
+                            index
+                          );
                         }}
                         variant="ghost"
                         size="sm"

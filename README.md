@@ -150,3 +150,60 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 - Validation state may fall out of sync if external state mutates the form
 
 ---
+
+### 12. **🐛 RHF Gotcha: Avoid `remove()` with `useFieldArray` When Sync Matters**
+
+React Hook Form’s `useFieldArray().remove()` _seems_ like the right way to delete array items — until it isn’t.
+
+If you're syncing form state live (like to Sanity or localStorage), **using `remove()` can screw you** in ways that are invisible at first:
+
+#### ❌ The Problem
+
+- `remove(index)` updates the internal RHF state.
+- But if you're using `.watch()` or `form.getValues()` to sync or validate — they may not reflect the removed item correctly **immediately**.
+- Some items may reappear due to a mismatch between internal field refs and `getValues()` output.
+- Validation will report errors for fields that appear deleted in the UI but _still exist_ in RHF's internal state.
+
+#### ✅ The Fix: Use `setValue()` Instead of `remove()`
+
+You can remove items _manually_ with full control:
+
+```tsx
+<Button
+  type="button"
+  onClick={() => {
+    const current = form.getValues(
+      "rules.accommodationInfo.accommodations"
+    );
+    const updated = current ? [...current] : [];
+    if (updated) {
+      updated.splice(index, 1);
+    }
+
+    form.setValue(
+      "rules.accommodationInfo.accommodations",
+      updated,
+      {
+        shouldValidate: true,
+        shouldDirty: true,
+      }
+    );
+  }}
+  variant="ghost"
+  size="sm"
+  className="text-destructive hover:text-destructive"
+>
+```
+
+This avoids the RHF internal mutation race condition and guarantees that:
+
+- 🧼 Draft sync stays correct
+- 🧪 Validation sees the updated array
+- 🧠 `watch()` and `getValues()` return the same result
+
+#### 🔥 TL;DR
+
+> If you're syncing or validating on change, don't trust `remove()`. Use `getValues` + `setValue`.
+> Your future self (and every poor bastard reading this file) will thank you.
+
+---

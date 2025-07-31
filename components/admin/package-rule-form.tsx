@@ -70,6 +70,7 @@ import { mapFormDataToSanityDoc } from "@/lib/transform/formToSanity";
 
 import { toast } from "sonner";
 import { useSanityDraftSync } from "@/hooks/useSanityDraftSync";
+import { setSkipNextDraftWrite } from "@/lib/formSync";
 
 interface ReferenceData {
   ports: Port[];
@@ -236,6 +237,11 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     mode: "onChange",
   });
 
+  // console.log("Custom validation", validation?.isValid);
+  // console.log("RHF isValid", form.formState.isValid);
+  // console.log("Form errors", form.formState.errors);
+  // console.log("Form values", form.formState);
+
   // Watch form values and update validation
   useEffect(() => {
     // 🔥 Manual initial validation
@@ -270,7 +276,8 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   }, [form]);
 
   // 🧠 Sync form state to Sanity
-  useSanityDraftSync(ruleId, form);
+  let enabledDraftSync = true;
+  useSanityDraftSync(ruleId, form, enabledDraftSync);
 
   const onSubmit = async (data: PackageRuleFormData) => {
     setIsLoading(true);
@@ -303,6 +310,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   };
 
   const handleTabChange = (tabId: string) => {
+    setSkipNextDraftWrite();
     setActiveTab(tabId);
   };
 
