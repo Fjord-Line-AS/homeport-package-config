@@ -410,7 +410,7 @@ export async function getPackageRule(
   return mockPackageRules.find((rule) => rule._id === id) || null;
 }
 
-export async function updatePackageRule(
+export async function publishPackageRule(
   id: string,
   data: Partial<PackageRule_v2>
 ): Promise<PackageRule_v2> {

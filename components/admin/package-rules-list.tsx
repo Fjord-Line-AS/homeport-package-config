@@ -19,7 +19,7 @@ interface Props {
 
 export function PackageRulesListClient({ packages }: Props) {
   return (
-    <div className="grid gap-6">
+    <div className="grid gap-6 pb-8">
       {packages.map((pkg) => {
         const isDraft = pkg._id !== pkg._originalId;
         const journeyType = pkg.rules?.journeyType;

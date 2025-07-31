@@ -14,11 +14,14 @@ export async function savePackageRuleDraft(
   const draftId = id.startsWith("drafts.") ? id : `drafts.${id}`;
 
   try {
-    await client.createOrReplace({
-      ...data,
-      _id: draftId,
-      _type: "packageRule_v2",
-    });
+    await client.createOrReplace(
+      {
+        ...data,
+        _id: draftId,
+        _type: "packageRule_v2",
+      },
+      { autoGenerateArrayKeys: true }
+    );
 
     return { success: true };
   } catch (err) {

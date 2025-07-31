@@ -14,9 +14,11 @@ export async function createPackageRule(
     _updatedAt: new Date().toISOString(),
   };
 
-  const created = await sanityApiClient.create<PackageRule_v2>(newDoc, {
-    autoGenerateArrayKeys: true,
-  });
+  const created = await sanityApiClient
+    .withConfig({ perspective: "drafts" })
+    .create<PackageRule_v2>(newDoc, {
+      autoGenerateArrayKeys: true,
+    });
 
   revalidatePath("/admin/package-rules");
 

@@ -39,7 +39,6 @@ import {
   ShipProductCode,
 } from "@fjordline/sanity-types";
 import { setSkipNextDraftWrite } from "@/lib/formSync";
-import { set } from "zod";
 import { removeFieldArrayItem } from "@/lib/form/removeFieldArrayItem";
 
 interface ReferenceData {

@@ -19,6 +19,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { NewRuleButton } from "@/components/admin/package-rules/actions/NewRuleButton";
 
 export default function Home() {
   return (
@@ -35,8 +36,8 @@ export default function Home() {
               <div className="p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
                 <Package className="h-12 w-12 text-white" />
               </div>
-              <div className="p-3 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
-                <Sparkles className="h-8 w-8 text-white" />
+              <div className="p-4 bg-white/10 backdrop-blur-sm rounded-xl border border-white/20">
+                <Sparkles className="h-12 w-12 text-white" />
               </div>
             </div>
 
@@ -153,8 +154,39 @@ export default function Home() {
             </Card>
           </div>
 
+          {/* Quick Actions */}
+          <Card className="bg-gradient-to-r from-brand-seashell-50 to-white border-0 shadow-lg">
+            <CardContent className="p-8">
+              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
+                <div>
+                  <h3 className="text-2xl font-bold text-brand-night-900 mb-2">
+                    Ready to get started?
+                  </h3>
+                  <p className="text-brand-night-600">
+                    Access the admin dashboard to create and manage your package
+                    rules
+                  </p>
+                </div>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button
+                    asChild
+                    className="bg-brand-red-500 hover:bg-brand-red-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
+                  >
+                    <Link href="/admin/package-rules">
+                      <Package className="h-4 w-4 mr-2" />
+                      Package Rules
+                    </Link>
+                  </Button>
+
+                  <NewRuleButton />
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
           {/* Stats Section */}
-          <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-brand-lg mb-16">
+          <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-brand-lg mt-16">
             <CardContent className="p-8">
               <div className="text-center mb-8">
                 <h2 className="text-3xl font-bold text-brand-night-900 mb-4">
@@ -213,46 +245,6 @@ export default function Home() {
                   <div className="text-sm text-brand-night-600">
                     Customizable
                   </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Quick Actions */}
-          <Card className="bg-gradient-to-r from-brand-seashell-50 to-white border-0 shadow-lg">
-            <CardContent className="p-8">
-              <div className="flex flex-col md:flex-row items-center justify-between gap-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-brand-night-900 mb-2">
-                    Ready to get started?
-                  </h3>
-                  <p className="text-brand-night-600">
-                    Access the admin dashboard to create and manage your package
-                    rules
-                  </p>
-                </div>
-
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <Button
-                    asChild
-                    className="bg-brand-red-500 hover:bg-brand-red-600 text-white shadow-lg hover:shadow-xl transition-all duration-200"
-                  >
-                    <Link href="/admin/package-rules">
-                      <Package className="h-4 w-4 mr-2" />
-                      Package Rules
-                    </Link>
-                  </Button>
-
-                  <Button
-                    asChild
-                    variant="outline"
-                    className="border-brand-ocean-200 text-brand-ocean-700 hover:bg-brand-ocean-50 bg-transparent"
-                  >
-                    <Link href="/admin/package-rules/new">
-                      <Sparkles className="h-4 w-4 mr-2" />
-                      Create New Rule
-                    </Link>
-                  </Button>
                 </div>
               </div>
             </CardContent>

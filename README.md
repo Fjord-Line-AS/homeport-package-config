@@ -64,7 +64,7 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 - Server actions:
 
   - `createPackageRule()`
-  - `updatePackageRule()` (also deletes draft copy)
+  - `publishPackageRule()` (also deletes draft copy)
   - `deletePackageRule()`
   - `savePackageRuleDraft()` (uses `createOrReplace` with `drafts.` prefix)
 
@@ -137,7 +137,7 @@ The `PackageRule_v2` Sanity type defines the schema for all rule data:
 
 - **Publish**:
 
-  - `updatePackageRule()` writes to published doc and deletes draft
+  - `publishPackageRule()` writes to published doc and deletes draft
 
 ---
 

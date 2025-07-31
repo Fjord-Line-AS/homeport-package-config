@@ -32,7 +32,11 @@ export function DeleteRuleButton({
   };
 
   return (
-    <Button variant="destructive" onClick={handleDelete}>
+    <Button
+      variant="destructive"
+      onClick={handleDelete}
+      className="cursor-pointer"
+    >
       <Trash2 className="h-4 w-4 mr-2" />
       {isDraft ? "Delete Draft" : "Delete"}
     </Button>

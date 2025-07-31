@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PackageRulesSearch } from "@/components/admin/package-rules-search";
 import { PackageRulesListClient } from "@/components/admin/package-rules-list";
 import { getPackageRules } from "@/app/actions/packageRules/getPackageRules";
+import { NewRuleButton } from "@/components/admin/package-rules/actions/NewRuleButton";
 
 export default async function PackageRulesPage() {
   const packages = await getPackageRules();
@@ -34,15 +35,7 @@ export default async function PackageRulesPage() {
               </div>
             </div>
 
-            <Button
-              asChild
-              className="bg-white text-brand-red-600 hover:bg-white/90 shadow-lg hover:shadow-xl transition-all duration-200 px-6 py-3 text-lg"
-            >
-              <Link href="/admin/package-rules/new">
-                <Plus className="h-5 w-5 mr-2" />
-                New Rule
-              </Link>
-            </Button>
+            <NewRuleButton />
           </div>
         </div>
       </div>

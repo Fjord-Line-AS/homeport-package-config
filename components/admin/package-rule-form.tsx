@@ -64,13 +64,13 @@ import { AccommodationSection } from "./form-sections/accommodation-section";
 
 import { clearPackageRuleDraft } from "@/lib/drafts/package-rule-draft";
 
-import { updatePackageRule } from "@/app/actions/packageRules/updatePackageRule";
 import { createPackageRule } from "@/app/actions/packageRules/createPackageRule";
 import { mapFormDataToSanityDoc } from "@/lib/transform/formToSanity";
 
 import { toast } from "sonner";
 import { useSanityDraftSync } from "@/hooks/useSanityDraftSync";
 import { setSkipNextDraftWrite } from "@/lib/formSync";
+import { publishPackageRule } from "@/app/actions/packageRules/publishPackageRule";
 
 interface ReferenceData {
   ports: Port[];
@@ -248,10 +248,6 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     try {
       const initialValues = form.getValues();
       setValidation(validatePackageRule(initialValues));
-      toast("Validation initialized", {
-        description: "Initial validation has been calculated.",
-        className: "!bg-green-500 !text-white",
-      });
     } catch {
       toast("Initial validation error", {
         description: "Form has errors on load.",
@@ -284,7 +280,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     const newDoc = mapFormDataToSanityDoc(data);
     try {
       if (rule) {
-        await updatePackageRule(rule._id, newDoc);
+        await publishPackageRule(rule._id, newDoc);
         toast("Rule updated", {
           description: "Your changes have been saved.",
           className: "!bg-green-500 !text-white",
@@ -455,10 +451,10 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
               >
                 <Save className="h-4 w-4" />
                 {isLoading
-                  ? "Saving..."
+                  ? "Publishing..."
                   : !validation?.isValid || !form.formState.isValid
                   ? "Fix Validation Errors"
-                  : "Save Rule"}
+                  : "Publish Rule"}
               </Button>
             </div>
           </div>

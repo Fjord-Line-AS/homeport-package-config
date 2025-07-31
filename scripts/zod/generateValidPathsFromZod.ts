@@ -11,11 +11,9 @@ import { ZodTypeAny } from "zod";
  *  - nested object fields
  */
 export function extractPaths(schema: ZodTypeAny, prefix = ""): string[] {
-  const def = schema._def;
-
   // Objects (e.g. z.object({}))
-  if (def.typeName === "ZodObject") {
-    const shape = def.shape() as Record<string, ZodTypeAny>;
+  if (schema.constructor.name === "ZodObject") {
+    const shape = (schema as any).shape as Record<string, ZodTypeAny>;
     const nestedPaths = Object.entries(shape).flatMap(([key, child]) => {
       const fullPath = prefix ? `${prefix}.${key}` : key;
       return extractPaths(child, fullPath);
@@ -25,17 +23,19 @@ export function extractPaths(schema: ZodTypeAny, prefix = ""): string[] {
 
   // Wrappers (optional, nullable, default, effects)
   if (
-    def.typeName === "ZodOptional" ||
-    def.typeName === "ZodNullable" ||
-    def.typeName === "ZodDefault" ||
-    def.typeName === "ZodEffects"
+    schema.constructor.name === "ZodOptional" ||
+    schema.constructor.name === "ZodNullable" ||
+    schema.constructor.name === "ZodDefault" ||
+    schema.constructor.name === "ZodEffects"
   ) {
-    return extractPaths(def.innerType ?? def.schema, prefix);
+    const inner =
+      (schema as any)._def?.innerType ?? (schema as any)._def?.schema;
+    return extractPaths(inner, prefix);
   }
 
   // Arrays
-  if (def.typeName === "ZodArray") {
-    const itemPaths = extractPaths(def.type, "");
+  if (schema.constructor.name === "ZodArray") {
+    const itemPaths = extractPaths((schema as any)._def.type, "");
 
     // Always include the array key itself
     const result = [prefix];
