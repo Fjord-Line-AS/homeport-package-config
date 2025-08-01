@@ -1,7 +1,5 @@
 import { Suspense } from "react";
-import Link from "next/link";
-import { Plus, Package } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Package } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PackageRulesSearch } from "@/components/admin/package-rules-search";
 import { PackageRulesListClient } from "@/components/admin/package-rules-list";
@@ -10,6 +8,7 @@ import { NewRuleButton } from "@/components/admin/package-rules/actions/NewRuleB
 
 export default async function PackageRulesPage() {
   const packages = await getPackageRules();
+  const publishedPackages = await getPackageRules("published");
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-night-100">
       <div className="relative overflow-hidden">
@@ -42,11 +41,6 @@ export default async function PackageRulesPage() {
 
       <div className="px-8 -mt-4 relative z-20">
         {/* Search Card */}
-        <Card className="mb-8 bg-white/90 backdrop-blur-sm border-0 shadow-brand">
-          <CardContent className="p-6">
-            <PackageRulesSearch />
-          </CardContent>
-        </Card>
 
         {/* Rules List */}
         <Suspense
@@ -71,7 +65,10 @@ export default async function PackageRulesPage() {
             </div>
           }
         >
-          <PackageRulesListClient packages={packages} />
+          <PackageRulesListClient
+            packages={packages}
+            publishedPackages={publishedPackages}
+          />
         </Suspense>
       </div>
     </div>

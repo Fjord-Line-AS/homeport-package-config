@@ -1,116 +1,113 @@
 "use client";
 
-import { Package, TrendingUp, Users, Clock, Pencil } from "lucide-react";
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  CardTitle,
-  CardDescription,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { DeleteRuleButton } from "./package-rules/actions/DeleteRuleButton";
-import EditRuleButton from "./package-rules/actions/EditRuleButton";
+import { useState } from "react";
+import { Search } from "lucide-react";
 import type { PackageRule_v2 } from "@fjordline/sanity-types";
 
+import { PackageRuleCard } from "./PackageRuleCard";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Card, CardContent } from "../ui/card";
+
 interface Props {
-  packages: (PackageRule_v2 & { _originalId: string })[];
+  packages: (PackageRule_v2 & { _originalId: string })[]; // draft or published
+  publishedPackages: (PackageRule_v2 & { _originalId: string })[];
 }
 
-export function PackageRulesListClient({ packages }: Props) {
+export function PackageRulesListClient({ packages, publishedPackages }: Props) {
+  const [search, setSearch] = useState("");
+  const [journeyType, setJourneyType] = useState("");
+
+  const filtered = packages
+    .filter((pkg) => {
+      const q = search.toLowerCase();
+      return (
+        pkg.name?.toLowerCase().includes(q) ||
+        pkg.description?.toLowerCase().includes(q)
+      );
+    })
+    .filter((pkg) => {
+      if (!journeyType || journeyType === "all") return true;
+      return pkg.rules?.journeyType === journeyType;
+    });
+
   return (
-    <div className="grid gap-6 pb-8">
-      {packages.map((pkg) => {
-        const isDraft = pkg._id !== pkg._originalId;
-        const journeyType = pkg.rules?.journeyType;
-        const minTravelers =
-          pkg.rules?.personConfiguration?.minTotalTravelers ?? 0;
-        const maxTravelers =
-          pkg.rules?.personConfiguration?.maxTotalTravelers ?? "∞";
-        const duration = pkg.rules?.journeyDuration ?? "Not set";
+    <>
+      <Card className="mb-8 bg-white/90 backdrop-blur-sm border-0 shadow-brand">
+        <CardContent className="p-6">
+          <div className="flex gap-4 flex-col md:flex-row md:items-center md:justify-between">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+              <Input
+                placeholder="Search rules by name or description..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="pl-10"
+              />
+            </div>
 
-        return (
-          <Card
-            key={pkg._id}
-            className="group border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002]"
-          >
-            <CardHeader className="relative pb-3">
-              <div className="flex items-start justify-between">
-                <div className="flex items-start gap-4">
-                  <div className="p-3 bg-gradient-to-r from-brand-red-500 to-brand-red-600 rounded-xl shadow-lg">
-                    <Package className="h-6 w-6 text-white" />
-                  </div>
-                  <div>
-                    <CardTitle className="text-xl text-brand-night-900 group-hover:text-brand-red-700 transition-colors">
-                      {pkg.name}
-                    </CardTitle>
-                    {pkg.description && (
-                      <CardDescription className="mt-2 text-brand-night-600 leading-relaxed">
-                        {pkg.description}
-                      </CardDescription>
-                    )}
-                  </div>
-                </div>
+            <Select value={journeyType} onValueChange={setJourneyType}>
+              <SelectTrigger className="w-48">
+                <SelectValue placeholder="Journey Type" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="all">All Types</SelectItem>
+                <SelectItem value="one-way">One Way</SelectItem>
+                <SelectItem value="return">Return</SelectItem>
+                <SelectItem value="multi-leg">Multi Leg</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+        </CardContent>
+      </Card>
 
-                <div className="flex flex-wrap gap-2">
-                  {isDraft && (
-                    <Badge className="bg-yellow-200 text-yellow-900 border-yellow-300">
-                      <Pencil className="h-3 w-3 mr-1" />
-                      Draft
-                    </Badge>
-                  )}
-                  {journeyType && (
-                    <Badge
-                      variant="outline"
-                      className="border-brand-ocean-200 text-brand-ocean-700 bg-brand-ocean-50 hover:bg-brand-ocean-100 transition-colors"
-                    >
-                      {journeyType}
-                    </Badge>
-                  )}
-                </div>
-              </div>
-            </CardHeader>
+      <div className="space-y-6">
+        {packages.length > 0 ? (
+          <div className="grid gap-6 pb-8">
+            {packages
+              .filter((pkg) => {
+                const q = search.toLowerCase();
+                return (
+                  pkg.name?.toLowerCase().includes(q) ||
+                  pkg.description?.toLowerCase().includes(q)
+                );
+              })
+              .filter((pkg) => {
+                if (!journeyType || journeyType === "all") return true;
+                return pkg.rules?.journeyType === journeyType;
+              })
+              .map((pkg) => {
+                const isDraft = pkg._originalId.startsWith("drafts.");
+                const hasDraft = packages.some(
+                  (p) => p._originalId === pkg._originalId
+                );
+                const hasPublished = publishedPackages.some(
+                  (p) => p._id === pkg._id
+                );
 
-            <CardContent className="relative pt-0">
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 text-sm text-brand-night-600">
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-brand-ocean-500" />
-                  {minTravelers}–{maxTravelers} travelers
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <Clock className="h-4 w-4 text-brand-glow-600" />
-                  <span>{duration} hours</span>
-                </div>
-
-                <div className="flex items-center gap-2">
-                  <TrendingUp className="h-4 w-4 text-brand-red-500" />
-                  <span>
-                    Updated {new Date(pkg._updatedAt).toLocaleDateString()}
-                  </span>
-                </div>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <div className="h-2 w-2 rounded-full bg-brand-ocean-500" />
-                  <span className="text-xs text-brand-night-500">
-                    Active Rule
-                  </span>
-                </div>
-
-                <div id="action-buttons" className="flex items-center gap-2">
-                  <EditRuleButton ruleId={pkg._originalId} isDraft={isDraft} />
-                  <DeleteRuleButton
-                    ruleId={pkg._originalId}
+                return (
+                  <PackageRuleCard
+                    key={pkg._id}
+                    pkg={pkg}
+                    hasDraft={hasDraft}
                     isDraft={isDraft}
+                    hasPublished={hasPublished}
                   />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        );
-      })}
-    </div>
+                );
+              })}
+          </div>
+        ) : (
+          <div className="text-sm text-brand-night-600 px-2 py-4">
+            No matching rules found.
+          </div>
+        )}
+      </div>
+    </>
   );
 }

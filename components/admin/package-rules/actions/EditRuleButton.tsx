@@ -6,9 +6,10 @@ import React from "react";
 type Props = {
   ruleId: string;
   isDraft?: boolean;
+  hasDraft?: boolean;
 };
 
-const EditRuleButton = ({ ruleId, isDraft }: Props) => {
+const EditRuleButton = ({ ruleId, isDraft, hasDraft }: Props) => {
   return (
     <Button
       variant="outline"

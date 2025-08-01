@@ -2,6 +2,7 @@
 
 import type { PackageRuleFormData } from "@/lib/validation";
 import { sanityApiClient } from "@/lib/sanity/client";
+import { revalidatePath } from "next/cache";
 
 const client = sanityApiClient;
 
@@ -22,6 +23,8 @@ export async function savePackageRuleDraft(
       },
       { autoGenerateArrayKeys: true }
     );
+
+    revalidatePath("/admin/package-rules");
 
     return { success: true };
   } catch (err) {
