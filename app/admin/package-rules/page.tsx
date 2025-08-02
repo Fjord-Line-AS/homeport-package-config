@@ -1,8 +1,7 @@
 import { Suspense } from "react";
 import { Package } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { PackageRulesSearch } from "@/components/admin/package-rules-search";
-import { PackageRulesListClient } from "@/components/admin/package-rules-list";
+import PackageRulesListClient from "@/components/admin/package-rules-list";
 import { getPackageRules } from "@/app/actions/packageRules/getPackageRules";
 import { NewRuleButton } from "@/components/admin/package-rules/actions/NewRuleButton";
 

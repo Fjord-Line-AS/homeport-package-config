@@ -21,7 +21,11 @@ export default function AdminLayout({
       <body className="font-[family-name:var(--font-geist-sans)] from-brand-seashell-50 via-white to-brand-seashell-100">
         <SidebarProvider>
           <Toaster />
-          <SanityLive />
+          <SanityLive
+            refreshOnFocus={true}
+            refreshOnMount={true}
+            refreshOnReconnect={true}
+          />
           <div className="flex min-h-screen w-full">
             <Sidebar />
             <SidebarInset className="flex-1">

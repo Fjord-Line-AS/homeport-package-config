@@ -75,7 +75,7 @@ export function PackageRuleCard({
                 variant="outline"
                 className="border-brand-ocean-200 text-brand-ocean-700 bg-brand-ocean-50 hover:bg-brand-ocean-100 transition-colors"
               >
-                {journeyType}
+                {pkg.rules?.journeyType}
               </Badge>
             )}
           </div>

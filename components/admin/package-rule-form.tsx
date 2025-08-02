@@ -237,11 +237,6 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
     mode: "onChange",
   });
 
-  // console.log("Custom validation", validation?.isValid);
-  // console.log("RHF isValid", form.formState.isValid);
-  // console.log("Form errors", form.formState.errors);
-  // console.log("Form values", form.formState);
-
   // Watch form values and update validation
   useEffect(() => {
     // 🔥 Manual initial validation
@@ -285,7 +280,6 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
           description: "Your changes have been saved.",
           className: "!bg-green-500 !text-white",
         });
-        clearPackageRuleDraft(ruleId); // Clear draft after successful save
         router.push("/admin/package-rules"); // 👈 redirect after save
       } else {
         await createPackageRule(newDoc as PackageRule_v2);
