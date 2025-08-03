@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/select";
 import { Card, CardContent } from "../ui/card";
 import { AnimatePresence, motion } from "framer-motion";
+import { mapSanityDocToFormData } from "@/lib/transform/formToSanity";
+import { validatePackageRule } from "@/lib/validation-utils";
 
 interface Props {
   packages: (PackageRule_v2 & { _originalId: string })[]; // draft or published
@@ -93,6 +95,9 @@ const PackageRulesListClient = ({ packages, publishedPackages }: Props) => {
                     (p) => p._id === pkg._id
                   );
 
+                  const formData = mapSanityDocToFormData(pkg);
+                  const validation = validatePackageRule(formData);
+
                   return (
                     <motion.div
                       key={pkg._id}
@@ -128,6 +133,7 @@ const PackageRulesListClient = ({ packages, publishedPackages }: Props) => {
                         hasDraft={hasDraft}
                         isDraft={isDraft}
                         hasPublished={hasPublished}
+                        validation={validation}
                       />
                     </motion.div>
                   );

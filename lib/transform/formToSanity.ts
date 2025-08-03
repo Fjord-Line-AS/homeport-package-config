@@ -15,3 +15,22 @@ export function mapFormDataToSanityDoc(
     _type: "packageRule_v2",
   };
 }
+
+export function mapSanityDocToFormData(
+  doc: PackageRule_v2
+): PackageRuleFormData {
+  return {
+    name: doc.name ?? "",
+    description: doc.description ?? "",
+    rules: doc.rules
+      ? {
+          ...doc.rules,
+          packageCode: doc.rules.packageCode ?? "",
+          weekdays: doc.rules.weekdays ?? [],
+        }
+      : {
+          packageCode: "",
+          weekdays: [],
+        },
+  };
+}
