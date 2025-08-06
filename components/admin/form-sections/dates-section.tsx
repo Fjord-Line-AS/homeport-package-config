@@ -48,6 +48,7 @@ export function DatesSection({ form }: DatesSectionProps) {
                     min="0"
                     step="0.5"
                     placeholder="6"
+                    defaultValue={6}
                     {...field}
                     onChange={(e) =>
                       field.onChange(
@@ -76,6 +77,7 @@ export function DatesSection({ form }: DatesSectionProps) {
                   <Input
                     type="number"
                     min="0"
+                    defaultValue={1}
                     placeholder="1"
                     {...field}
                     onChange={(e) =>

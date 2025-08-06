@@ -58,6 +58,7 @@ export function PersonConfigurationSection({
                   <FormControl>
                     <Input
                       type="number"
+                      defaultValue={1}
                       min="1"
                       {...field}
                       onChange={(e) =>
@@ -86,6 +87,7 @@ export function PersonConfigurationSection({
                   <FormControl>
                     <Input
                       type="number"
+                      defaultValue={10}
                       min="1"
                       {...field}
                       onChange={(e) =>
@@ -149,6 +151,7 @@ export function PersonConfigurationSection({
                     <FormControl>
                       <Input
                         type="number"
+                        defaultValue={1}
                         min="1"
                         {...field}
                         onChange={(e) =>
@@ -177,6 +180,7 @@ export function PersonConfigurationSection({
                     <FormControl>
                       <Input
                         type="number"
+                        defaultValue={1}
                         min="1"
                         {...field}
                         onChange={(e) =>
@@ -241,6 +245,7 @@ export function PersonConfigurationSection({
                     <FormControl>
                       <Input
                         type="number"
+                        defaultValue={1}
                         min="0"
                         {...field}
                         onChange={(e) =>
@@ -267,6 +272,7 @@ export function PersonConfigurationSection({
                     <FormControl>
                       <Input
                         type="number"
+                        defaultValue={0}
                         min="0"
                         {...field}
                         onChange={(e) =>
@@ -293,6 +299,7 @@ export function PersonConfigurationSection({
                     <FormControl>
                       <Input
                         type="number"
+                        defaultValue={1}
                         min="0"
                         {...field}
                         onChange={(e) =>
@@ -358,6 +365,7 @@ export function PersonConfigurationSection({
                       <FormControl>
                         <Input
                           type="number"
+                          defaultValue={16}
                           min="0"
                           max="18"
                           {...field}
@@ -387,6 +395,7 @@ export function PersonConfigurationSection({
                       <FormControl>
                         <Input
                           type="number"
+                          defaultValue={18}
                           min="0"
                           max="18"
                           {...field}
@@ -418,6 +427,7 @@ export function PersonConfigurationSection({
                       <FormControl>
                         <Input
                           type="number"
+                          defaultValue={0}
                           min="0"
                           {...field}
                           onChange={(e) =>
@@ -446,6 +456,7 @@ export function PersonConfigurationSection({
                       <FormControl>
                         <Input
                           type="number"
+                          defaultValue={0}
                           min="0"
                           {...field}
                           onChange={(e) =>
@@ -474,6 +485,7 @@ export function PersonConfigurationSection({
                       <FormControl>
                         <Input
                           type="number"
+                          defaultValue={0}
                           min="0"
                           {...field}
                           onChange={(e) =>

@@ -101,6 +101,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                       <Input
                         type="number"
                         min="0"
+                        defaultValue={1}
                         placeholder="1"
                         {...field}
                         onChange={(e) =>
@@ -218,6 +219,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                     <FormControl>
                       <Input
                         type="number"
+                        defaultValue={0}
                         min="0"
                         placeholder="0"
                         {...field}
@@ -337,6 +339,7 @@ export function VehiclesSection({ form, referenceData }: VehiclesSectionProps) {
                   <FormControl>
                     <Input
                       type="number"
+                      defaultValue={0}
                       min="0"
                       placeholder="0"
                       {...field}

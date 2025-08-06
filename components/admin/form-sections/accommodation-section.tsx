@@ -185,6 +185,7 @@ export function AccommodationSection({
                                 type="number"
                                 min="0"
                                 step="0.01"
+                                defaultValue={0}
                                 placeholder="0.00"
                                 {...field}
                                 onChange={(e) =>
@@ -221,6 +222,7 @@ export function AccommodationSection({
                                   <Input
                                     type="number"
                                     min="1"
+                                    defaultValue={1}
                                     {...field}
                                     onChange={(e) =>
                                       field.onChange(

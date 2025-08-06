@@ -187,6 +187,7 @@ export function JourneyInfoSection({
                   min="0"
                   step="0.5"
                   placeholder="6"
+                  defaultValue={6}
                   {...field}
                   onChange={(e) =>
                     field.onChange(
@@ -214,6 +215,7 @@ export function JourneyInfoSection({
               <FormControl>
                 <Input
                   type="number"
+                  defaultValue={1}
                   min="0"
                   placeholder="1"
                   {...field}

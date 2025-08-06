@@ -182,7 +182,8 @@ const tabs = [
 
 export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState("journey");
+  const currentActiveTab = localStorage.getItem("activeTab") || "journey";
+  const [activeTab, setActiveTab] = useState(currentActiveTab);
   const [isLoading, setIsLoading] = useState(false);
   const [validation, setValidation] = useState<ValidationSummary | null>(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -198,8 +199,8 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
           rules: rule.rules,
         }
       : {
-          name: "",
-          description: "",
+          name: "Untitled Rule",
+          description: "Get started by configuring your package rule",
           rules: {
             journeyType: "RETURN",
             ports: {
@@ -214,6 +215,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
             weekdays: ["monday", "tuesday", "wednesday", "thursday", "friday"],
             personConfiguration: {
               minTotalTravelers: 1,
+              maxTotalTravelers: 10,
               roomQuantity: { minQuantity: 1, locked: false },
               adults: { minQuantity: 1, locked: false },
               children: { minQuantity: 0, maxAge: 16, locked: false },
@@ -301,6 +303,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
 
   const handleTabChange = (tabId: string) => {
     setSkipNextDraftWrite();
+    localStorage.setItem("activeTab", tabId);
     setActiveTab(tabId);
   };
 
@@ -383,7 +386,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
               <Button
                 variant="ghost"
                 onClick={() => router.back()}
-                className="gap-2 text-white hover:text-white hover:bg-white/10 backdrop-blur-sm border border-white/20"
+                className="cursor-pointer gap-2 text-white hover:text-white hover:bg-white/10 backdrop-blur-sm border border-white/20"
               >
                 <ArrowLeft className="h-4 w-4" />
                 Back
@@ -518,7 +521,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
                         type="button"
                         onClick={() => handleTabChange(tab.id)}
                         className={cn(
-                          "relative p-6 text-left transition-all duration-300 group",
+                          "cursor-pointer relative p-6 text-left transition-all duration-300 group",
                           "border-r border-brand-seashell-200 last:border-r-0",
                           "lg:border-r lg:border-b-0 border-b",
                           isActive && "bg-brand-seashell-50",
