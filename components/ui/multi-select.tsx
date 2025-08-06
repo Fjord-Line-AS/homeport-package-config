@@ -23,6 +23,7 @@ export interface Option {
   label: string;
   value: string;
   description?: string;
+  code: string; // Added code field for cabin type
 }
 
 interface MultiSelectProps {
@@ -117,7 +118,9 @@ export function MultiSelect({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={option.value}
+                  value={`${option.label} ${option.description || ""} ${
+                    option.code || ""
+                  }`} // Now searches label + description
                   onSelect={() => handleSelect(option.value)}
                   className="cursor-pointer"
                 >

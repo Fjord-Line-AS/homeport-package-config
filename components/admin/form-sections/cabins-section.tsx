@@ -40,6 +40,24 @@ import {
   ShipProductCode,
 } from "@fjordline/sanity-types";
 import { removeFieldArrayItem } from "@/lib/form/removeFieldArrayItem";
+import {
+  SearchableOption,
+  SearchableSelect,
+} from "@/components/ui/searchable-select";
+
+interface ReferenceData {
+  ports: Port[];
+  shipProductCodes: ShipProductCode[];
+  ships: Ship[];
+  shipCabins: ShipCabin[];
+  vehicleCategories: AllowedVehicleCategory[];
+  accommodations: Accommodation_v2[];
+}
+
+interface CabinsSectionProps {
+  form: UseFormReturn<PackageRuleFormData>;
+  referenceData: ReferenceData;
+}
 
 interface ReferenceData {
   ports: Port[];
@@ -76,7 +94,17 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
     value: cabin._id,
     label: cabin.cabinName?.en || cabin.cabinName?.nb || "Unknown Cabin",
     description: `• Code: ${cabin.cabinType || "N/A"}`,
+    code: cabin.cabinType || "N/A",
   }));
+
+  // Transform cabin data for SearchableSelect (single cabin type selection)
+  const cabinTypeOptions: SearchableOption[] = referenceData.shipCabins.map(
+    (cabin) => ({
+      value: cabin._id,
+      label: cabin.cabinName?.en || cabin.cabinName?.nb || "Unknown Cabin",
+      description: `• Code: ${cabin.cabinType || "N/A"}`,
+    })
+  );
 
   return (
     <div className="grid gap-6">
@@ -298,29 +326,24 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                         render={({ field }) => (
                           <FormItem>
                             <FormLabel>Cabin Type</FormLabel>
-                            <Select
-                              onValueChange={(value) => {
-                                field.onChange({
-                                  _ref: value,
-                                  _type: "reference",
-                                });
-                              }}
-                              value={field.value?._ref}
-                            >
-                              <FormControl>
-                                <SelectTrigger>
-                                  <SelectValue placeholder="Select cabin type" />
-                                </SelectTrigger>
-                              </FormControl>
-                              <SelectContent>
-                                {referenceData.shipCabins.map((cabin) => (
-                                  <SelectItem key={cabin._id} value={cabin._id}>
-                                    {cabin.cabinName?.en || cabin.cabinName?.nb}{" "}
-                                    ({cabin.cabinType})
-                                  </SelectItem>
-                                ))}
-                              </SelectContent>
-                            </Select>
+                            <FormControl>
+                              <SearchableSelect
+                                options={cabinTypeOptions}
+                                value={field.value?._ref}
+                                onChange={(value) => {
+                                  field.onChange({
+                                    _ref: value,
+                                    _type: "reference",
+                                  });
+                                }}
+                                placeholder="Search and select cabin type..."
+                                searchPlaceholder="Search cabin types..."
+                                emptyText="No cabin types found."
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              Select the cabin type for pricing
+                            </FormDescription>
                             <FormMessage />
                           </FormItem>
                         )}
