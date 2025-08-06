@@ -29,7 +29,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Checkbox } from "@/components/ui/checkbox";
+import { MultiSelect, type Option } from "@/components/ui/multi-select";
 import type { PackageRuleFormData } from "@/lib/validation";
 import {
   Accommodation_v2,
@@ -56,7 +56,7 @@ interface CabinsSectionProps {
 }
 
 export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append } = useFieldArray({
     control: form.control,
     name: "rules.cabinInfo.cabins",
   });
@@ -70,6 +70,13 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
       _key: `cabin-${Date.now()}`,
     });
   };
+
+  // Transform cabin data for MultiSelect
+  const cabinOptions: Option[] = referenceData.shipCabins.map((cabin) => ({
+    value: cabin._id,
+    label: cabin.cabinName?.en || cabin.cabinName?.nb || "Unknown Cabin",
+    description: `• Code: ${cabin.cabinType || "N/A"}`,
+  }));
 
   return (
     <div className="grid gap-6">
@@ -116,56 +123,37 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
             )}
           />
 
-          <div className="space-y-3">
-            <label className="text-sm font-medium">
-              Available Outbound Cabins
-            </label>
-            <div className="grid gap-3 md:grid-cols-2">
-              {referenceData.shipCabins.map((cabin) => (
-                <FormField
-                  key={`outbound-${cabin._id}`}
-                  control={form.control}
-                  name="rules.cabinInfo.outbound.cabins"
-                  render={({ field }) => {
-                    const isChecked =
-                      field.value?.some((ref) => ref._ref === cabin._id) ||
-                      false;
-                    return (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl>
-                          <Checkbox
-                            checked={isChecked}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                field.onChange([
-                                  ...(field.value || []),
-                                  {
-                                    _ref: cabin._id,
-                                    _type: "reference" as const,
-                                    _key: `outbound-${cabin._id}-${Date.now()}`,
-                                  },
-                                ]);
-                              } else {
-                                field.onChange(
-                                  field.value?.filter(
-                                    (ref) => ref._ref !== cabin._id
-                                  ) || []
-                                );
-                              }
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {cabin.cabinName?.en || cabin.cabinName?.nb} (
-                          {cabin.cabinType})
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          <FormField
+            control={form.control}
+            name="rules.cabinInfo.outbound.cabins"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Available Outbound Cabins</FormLabel>
+                <FormControl>
+                  <MultiSelect
+                    options={cabinOptions}
+                    selected={field.value?.map((ref) => ref._ref) || []}
+                    onChange={(selectedIds) => {
+                      const newRefs = selectedIds.map((id) => ({
+                        _ref: id,
+                        _type: "reference" as const,
+                        _key: `outbound-${id}-${Date.now()}`,
+                      }));
+                      field.onChange(newRefs);
+                    }}
+                    placeholder="Search and select cabins..."
+                    searchPlaceholder="Search cabins..."
+                    emptyText="No cabins found."
+                    className="w-full"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Select available cabin types for outbound journey
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </CardContent>
       </Card>
 
@@ -213,56 +201,37 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
             )}
           />
 
-          <div className="space-y-3">
-            <label className="text-sm font-medium">
-              Available Inbound Cabins
-            </label>
-            <div className="grid gap-3 md:grid-cols-2">
-              {referenceData.shipCabins.map((cabin) => (
-                <FormField
-                  key={`inbound-${cabin._id}`}
-                  control={form.control}
-                  name="rules.cabinInfo.inbound.cabins"
-                  render={({ field }) => {
-                    const isChecked =
-                      field.value?.some((ref) => ref._ref === cabin._id) ||
-                      false;
-                    return (
-                      <FormItem className="flex flex-row items-start space-x-3 space-y-0">
-                        <FormControl>
-                          <Checkbox
-                            checked={isChecked}
-                            onCheckedChange={(checked) => {
-                              if (checked) {
-                                field.onChange([
-                                  ...(field.value || []),
-                                  {
-                                    _ref: cabin._id,
-                                    _type: "reference" as const,
-                                    _key: `inbound-${cabin._id}-${Date.now()}`,
-                                  },
-                                ]);
-                              } else {
-                                field.onChange(
-                                  field.value?.filter(
-                                    (ref) => ref._ref !== cabin._id
-                                  ) || []
-                                );
-                              }
-                            }}
-                          />
-                        </FormControl>
-                        <FormLabel className="text-sm font-normal">
-                          {cabin.cabinName?.en || cabin.cabinName?.nb} (
-                          {cabin.cabinType})
-                        </FormLabel>
-                      </FormItem>
-                    );
-                  }}
-                />
-              ))}
-            </div>
-          </div>
+          <FormField
+            control={form.control}
+            name="rules.cabinInfo.inbound.cabins"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Available Inbound Cabins</FormLabel>
+                <FormControl>
+                  <MultiSelect
+                    options={cabinOptions}
+                    selected={field.value?.map((ref) => ref._ref) || []}
+                    onChange={(selectedIds) => {
+                      const newRefs = selectedIds.map((id) => ({
+                        _ref: id,
+                        _type: "reference" as const,
+                        _key: `inbound-${id}-${Date.now()}`,
+                      }));
+                      field.onChange(newRefs);
+                    }}
+                    placeholder="Search and select cabins..."
+                    searchPlaceholder="Search cabins..."
+                    emptyText="No cabins found."
+                    className="w-full"
+                  />
+                </FormControl>
+                <FormDescription>
+                  Select available cabin types for inbound journey
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </CardContent>
       </Card>
 
