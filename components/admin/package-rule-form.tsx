@@ -408,7 +408,10 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
                 <div className="hidden sm:flex items-center gap-3 bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 border border-white/20">
                   <div className="text-sm text-white/90">
                     <span className="font-medium">
-                      {validation.totalCompletedFields}
+                      {validation.totalCompletedFields >
+                      validation.totalRequiredFields
+                        ? validation.totalRequiredFields
+                        : validation.totalCompletedFields}
                     </span>
                     <span className="text-white/70">
                       {" "}

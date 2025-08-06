@@ -60,6 +60,10 @@ export function PackageRuleCard({
   );
   const hasErrors = totalErrors > 0;
 
+  const progressPercentage = validation
+    ? Math.min(Math.round(validation.overallProgress), 100)
+    : 0;
+
   return (
     <Card className="group border-0 bg-white/80 backdrop-blur-sm overflow-hidden hover:scale-[1.002] transition-all duration-300">
       <CardHeader className="relative pb-3">
@@ -200,7 +204,7 @@ export function PackageRuleCard({
               <div
                 className={cn(
                   "text-xs px-2 py-1 rounded-full font-medium",
-                  validation.overallProgress === 100
+                  validation.overallProgress >= 100
                     ? "bg-green-100 text-green-800"
                     : validation.overallProgress >= 75
                     ? "bg-blue-100 text-blue-800"
@@ -209,7 +213,7 @@ export function PackageRuleCard({
                     : "bg-red-100 text-red-800"
                 )}
               >
-                {Math.round(validation.overallProgress)}% complete
+                {progressPercentage}% complete
               </div>
             </div>
           </div>

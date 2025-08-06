@@ -13,7 +13,7 @@ export default function Loading() {
             {/* Main icon container */}
             <div className="absolute inset-2 bg-white rounded-xl shadow-brand flex items-center justify-center">
               <Package
-                className="w-10 h-10 text-brand-red-600 animate-bounce"
+                className="w-10 h-10 text-brand-red-600 z-50"
                 style={{ animationDuration: "1.5s" }}
               />
             </div>

@@ -353,7 +353,7 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                         control={form.control}
                         name={`rules.cabinInfo.cabins.${index}.additonalCost`}
                         render={({ field }) => (
-                          <FormItem>
+                          <FormItem className="">
                             <FormLabel>Additional Cost</FormLabel>
                             <FormControl>
                               <Input
@@ -385,14 +385,11 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                         name={`rules.cabinInfo.cabins.${index}.isIncluded`}
                         render={({ field }) => (
                           <FormItem className="flex flex-row items-center justify-between rounded-lg border p-3">
-                            <div className="space-y-0.5">
-                              <FormLabel className="text-sm">
-                                Included
-                              </FormLabel>
-                              <FormDescription>
-                                Is this cabin included in the base price?
-                              </FormDescription>
-                            </div>
+                            <FormLabel className="text-sm">Included</FormLabel>
+                            <FormDescription>
+                              Is this cabin included in the base price?
+                            </FormDescription>
+
                             <FormControl>
                               <Switch
                                 checked={field.value}
