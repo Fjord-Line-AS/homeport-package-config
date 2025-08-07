@@ -21,12 +21,14 @@ import {
 import type { PackageRuleFormData } from "@/lib/validation";
 import {
   Accommodation_v2,
+  ACCOMMODATION_WITH_TRANSLATIONS_Result,
   AllowedVehicleCategory,
   Port,
   Ship,
   ShipCabin,
   ShipProductCode,
 } from "@fjordline/sanity-types";
+import { SearchableSelect } from "@/components/ui/searchable-select";
 
 interface ReferenceData {
   ports: Port[];
@@ -34,7 +36,7 @@ interface ReferenceData {
   ships: Ship[];
   shipCabins: ShipCabin[];
   vehicleCategories: AllowedVehicleCategory[];
-  accommodations: Accommodation_v2[];
+  accommodations: ACCOMMODATION_WITH_TRANSLATIONS_Result[];
 }
 
 interface JourneyInfoSectionProps {
@@ -46,6 +48,12 @@ export function JourneyInfoSection({
   form,
   referenceData,
 }: JourneyInfoSectionProps) {
+  const productCodeOptions = referenceData.shipProductCodes.map((code) => ({
+    value: code._id,
+    label: code.productName?.en || code.productName?.nb || "Unknown Product",
+    description: `• Code: ${code.productCode}`,
+    code: code.productCode, // Added code field for product code
+  }));
   return (
     <div className="grid gap-6">
       <div className="grid gap-4 md:grid-cols-2">
@@ -76,7 +84,7 @@ export function JourneyInfoSection({
             <FormItem>
               <FormLabel>Package Code</FormLabel>
               <FormControl>
-                <Input placeholder="e.g., STD-UK-FR-RET" {...field} />
+                <Input placeholder="e.g., STD-B-HH-RET" {...field} />
               </FormControl>
               <FormDescription>Unique package identifier code</FormDescription>
               <FormMessage />
@@ -143,30 +151,23 @@ export function JourneyInfoSection({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Product Code</FormLabel>
-              <Select
-                onValueChange={(value) => {
-                  field.onChange({
-                    _ref: value,
-                    _type: "reference",
-                  });
-                }}
-                value={field.value?._ref}
-              >
-                <FormControl>
-                  <SelectTrigger>
-                    <SelectValue placeholder="Select product code" />
-                  </SelectTrigger>
-                </FormControl>
-                <SelectContent>
-                  {referenceData.shipProductCodes.map((product) => (
-                    <SelectItem key={product._id} value={product._id}>
-                      {product.productCode} - {product.productName?.en}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <FormControl>
+                <SearchableSelect
+                  options={productCodeOptions}
+                  value={field.value?._ref}
+                  onChange={(value) => {
+                    field.onChange({
+                      _ref: value,
+                      _type: "reference",
+                    });
+                  }}
+                  placeholder="Search and select product code..."
+                  searchPlaceholder="Search product codes..."
+                  emptyText="No product codes found."
+                />
+              </FormControl>
               <FormDescription>
-                The product code this rule is associated with
+                Select the cabin type for pricing
               </FormDescription>
               <FormMessage />
             </FormItem>

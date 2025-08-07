@@ -64,7 +64,7 @@ export function SearchableSelect({
           disabled={disabled}
         >
           {selectedOption ? (
-            <div className="flex flex-col items-start">
+            <div className="flex  items-center gap-1">
               <span className="font-medium">{selectedOption.label}</span>
               {selectedOption.description && (
                 <span className="text-xs text-muted-foreground">
@@ -100,7 +100,7 @@ export function SearchableSelect({
                       value === option.value ? "opacity-100" : "opacity-0"
                     )}
                   />
-                  <div className="flex-1">
+                  <div className="flex">
                     <div className="font-medium">{option.label}</div>
                     {option.description && (
                       <div className="text-sm text-muted-foreground">

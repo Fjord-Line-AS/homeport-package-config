@@ -41,6 +41,7 @@ import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import {
   Accommodation_v2,
+  ACCOMMODATION_WITH_TRANSLATIONS_Result,
   AllowedVehicleCategory,
   PackageRule_v2,
   Port,
@@ -78,7 +79,7 @@ interface ReferenceData {
   ships: Ship[];
   shipCabins: ShipCabin[];
   vehicleCategories: AllowedVehicleCategory[];
-  accommodations: Accommodation_v2[];
+  accommodations: ACCOMMODATION_WITH_TRANSLATIONS_Result[];
 }
 
 interface PackageRuleFormProps {
@@ -182,7 +183,10 @@ const tabs = [
 
 export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
   const router = useRouter();
-  const currentActiveTab = localStorage.getItem("activeTab") || "journey";
+  const currentActiveTab =
+    typeof window !== undefined
+      ? localStorage?.getItem("activeTab") || "journey"
+      : "journey";
   const [activeTab, setActiveTab] = useState(currentActiveTab);
   const [isLoading, setIsLoading] = useState(false);
   const [validation, setValidation] = useState<ValidationSummary | null>(null);

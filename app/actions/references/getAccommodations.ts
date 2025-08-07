@@ -1,10 +1,21 @@
 "use server";
 import { sanityFetch } from "@/lib/sanity/live";
-import { Accommodation_v2 } from "@fjordline/sanity-types";
+import { ACCOMMODATION_WITH_TRANSLATIONS_Result } from "@fjordline/sanity-types";
 
-export async function getAccommodations(): Promise<Accommodation_v2[]> {
+export async function getAccommodations(): Promise<
+  ACCOMMODATION_WITH_TRANSLATIONS_Result[]
+> {
   const sanityFetchConfig = {
-    query: `*[_type == "accommodation_v2"]`,
+    perspective: "published" as const,
+    query: `*[_type == "accommodation_v2"]{
+    ...,
+    "_translations": *[_type == "translation.metadata" && references(^._id)].translations[].value->{
+    title,
+    slug,
+    language,
+    _id
+  },
+    }`,
   };
   const res = await sanityFetch(sanityFetchConfig);
   if (!res || !Array.isArray(res.data)) {

@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/card";
 import type { PackageRuleFormData } from "@/lib/validation";
 import {
-  Accommodation_v2,
+  ACCOMMODATION_WITH_TRANSLATIONS_Result,
   AllowedVehicleCategory,
   Port,
   Ship,
@@ -35,7 +35,7 @@ interface ReferenceData {
   ships: Ship[];
   shipCabins: ShipCabin[];
   vehicleCategories: AllowedVehicleCategory[];
-  accommodations: Accommodation_v2[];
+  accommodations: ACCOMMODATION_WITH_TRANSLATIONS_Result[];
 }
 
 interface VehiclesSectionProps {

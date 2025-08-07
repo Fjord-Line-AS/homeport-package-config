@@ -33,6 +33,7 @@ import { MultiSelect, type Option } from "@/components/ui/multi-select";
 import type { PackageRuleFormData } from "@/lib/validation";
 import {
   Accommodation_v2,
+  ACCOMMODATION_WITH_TRANSLATIONS_Result,
   AllowedVehicleCategory,
   Port,
   Ship,
@@ -45,15 +46,6 @@ import {
   SearchableSelect,
 } from "@/components/ui/searchable-select";
 
-interface ReferenceData {
-  ports: Port[];
-  shipProductCodes: ShipProductCode[];
-  ships: Ship[];
-  shipCabins: ShipCabin[];
-  vehicleCategories: AllowedVehicleCategory[];
-  accommodations: Accommodation_v2[];
-}
-
 interface CabinsSectionProps {
   form: UseFormReturn<PackageRuleFormData>;
   referenceData: ReferenceData;
@@ -65,7 +57,7 @@ interface ReferenceData {
   ships: Ship[];
   shipCabins: ShipCabin[];
   vehicleCategories: AllowedVehicleCategory[];
-  accommodations: Accommodation_v2[];
+  accommodations: ACCOMMODATION_WITH_TRANSLATIONS_Result[];
 }
 
 interface CabinsSectionProps {

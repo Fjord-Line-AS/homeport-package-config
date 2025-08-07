@@ -33,6 +33,7 @@ import {
   ShipCabin,
   AllowedVehicleCategory,
   Accommodation_v2,
+  ACCOMMODATION_WITH_TRANSLATIONS_Result,
 } from "@fjordline/sanity-types";
 
 interface ReferenceData {
@@ -41,7 +42,7 @@ interface ReferenceData {
   ships: Ship[];
   shipCabins: ShipCabin[];
   vehicleCategories: AllowedVehicleCategory[];
-  accommodations: Accommodation_v2[];
+  accommodations: ACCOMMODATION_WITH_TRANSLATIONS_Result[];
 }
 
 interface PortConfigurationSectionProps {

@@ -23,7 +23,6 @@ export interface Option {
   label: string;
   value: string;
   description?: string;
-  code: string; // Added code field for cabin type
 }
 
 interface MultiSelectProps {
@@ -36,6 +35,7 @@ interface MultiSelectProps {
   maxDisplay?: number;
   disabled?: boolean;
   className?: string;
+  single?: boolean;
 }
 
 export function MultiSelect({
@@ -48,6 +48,7 @@ export function MultiSelect({
   maxDisplay = 3,
   disabled = false,
   className,
+  single = false,
 }: MultiSelectProps) {
   const [open, setOpen] = React.useState(false);
 
@@ -56,10 +57,17 @@ export function MultiSelect({
   };
 
   const handleSelect = (item: string) => {
-    if (selected.includes(item)) {
-      handleUnselect(item);
+    if (single) {
+      // Single selection mode
+      onChange([item]);
+      setOpen(false);
     } else {
-      onChange([...selected, item]);
+      // Multi selection mode
+      if (selected.includes(item)) {
+        handleUnselect(item);
+      } else {
+        onChange([...selected, item]);
+      }
     }
   };
 
@@ -85,25 +93,40 @@ export function MultiSelect({
             {selectedOptions.length === 0 && (
               <span className="text-muted-foreground">{placeholder}</span>
             )}
-            {selectedOptions.slice(0, maxDisplay).map((option) => (
-              <Badge
-                key={option.value}
-                variant="secondary"
-                className="mr-1 mb-1 hover:bg-secondary"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  handleUnselect(option.value);
-                }}
-              >
-                {option.label}
-                <X className="ml-1 h-3 w-3 hover:text-destructive" />
-              </Badge>
-            ))}
-            {selectedOptions.length > maxDisplay && (
-              <Badge variant="secondary" className="mr-1 mb-1">
-                +{selectedOptions.length - maxDisplay} more
-              </Badge>
+            {single && selectedOptions.length > 0 ? (
+              // Single selection display
+              <div className="flex items-center gap-2">
+                <span className="font-medium">{selectedOptions[0].label}</span>
+                {selectedOptions[0].description && (
+                  <span className="text-sm text-muted-foreground">
+                    ({selectedOptions[0].description})
+                  </span>
+                )}
+              </div>
+            ) : (
+              // Multi selection display
+              <>
+                {selectedOptions.slice(0, maxDisplay).map((option) => (
+                  <Badge
+                    key={option.value}
+                    variant="secondary"
+                    className="mr-1 mb-1 hover:bg-secondary"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      handleUnselect(option.value);
+                    }}
+                  >
+                    {option.label}
+                    <X className="ml-1 h-3 w-3 hover:text-destructive" />
+                  </Badge>
+                ))}
+                {selectedOptions.length > maxDisplay && (
+                  <Badge variant="secondary" className="mr-1 mb-1">
+                    +{selectedOptions.length - maxDisplay} more
+                  </Badge>
+                )}
+              </>
             )}
           </div>
           <ChevronsUpDown className="h-4 w-4 shrink-0 opacity-50" />
@@ -118,9 +141,7 @@ export function MultiSelect({
               {options.map((option) => (
                 <CommandItem
                   key={option.value}
-                  value={`${option.label} ${option.description || ""} ${
-                    option.code || ""
-                  }`} // Now searches label + description
+                  value={`${option.label} ${option.description || ""}`}
                   onSelect={() => handleSelect(option.value)}
                   className="cursor-pointer"
                 >
