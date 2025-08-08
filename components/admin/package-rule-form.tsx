@@ -72,6 +72,7 @@ import { toast } from "sonner";
 import { useSanityDraftSync } from "@/hooks/useSanityDraftSync";
 import { setSkipNextDraftWrite } from "@/lib/formSync";
 import { publishPackageRule } from "@/app/actions/packageRules/publishPackageRule";
+import { Locale } from "@/types/locales";
 
 interface ReferenceData {
   ports: Port[];
@@ -200,6 +201,7 @@ export function PackageRuleForm({ rule, referenceData }: PackageRuleFormProps) {
       ? {
           name: rule.name,
           description: rule.description || "",
+          availableLanguages: (rule.availableLanguages as Locale[]) || [],
           rules: rule.rules,
         }
       : {

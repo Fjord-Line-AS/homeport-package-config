@@ -21,6 +21,8 @@ export async function publishPackageRule(
     _rev: data._rev ?? "", // Ensure _rev is always a string
   };
 
+  console.log("[publishPackageRule] Updating document:", updatedDoc);
+
   const updated = await sanityApiClient.createOrReplace(updatedDoc, {
     autoGenerateArrayKeys: true,
   });

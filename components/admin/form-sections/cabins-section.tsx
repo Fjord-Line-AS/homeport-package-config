@@ -353,7 +353,6 @@ export function CabinsSection({ form, referenceData }: CabinsSectionProps) {
                                 min="0"
                                 step="0.01"
                                 placeholder="0.00"
-                                defaultValue={0}
                                 {...field}
                                 onChange={(e) =>
                                   field.onChange(

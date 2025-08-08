@@ -66,12 +66,20 @@ export function validatePackageRule(
 function validateBasicInfo(formData: PackageRuleFormData): ValidationSection {
   const requiredFields: ValidPackageRulePath[] = [
     "name",
+    "availableLanguages",
     "rules.journeyType",
     "rules.packageCode",
     "rules.productCode",
   ];
   const completedFields: ValidPackageRulePath[] = [];
   const errors = [];
+
+  const availableLanguages = formData.availableLanguages || [];
+  if (availableLanguages && availableLanguages.length > 0) {
+    completedFields.push("availableLanguages");
+  } else {
+    errors.push("At least one language must be selected");
+  }
 
   if (formData.name && formData.name.trim()) completedFields.push("name");
   else errors.push("Rule name is required");

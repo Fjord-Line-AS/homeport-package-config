@@ -32,15 +32,10 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {
-  Collapsible,
-  CollapsibleContent,
-  CollapsibleTrigger,
-} from "@/components/ui/collapsible";
+import { Collapsible, CollapsibleContent } from "@/components/ui/collapsible";
 import { MultiSelect, type Option } from "@/components/ui/multi-select";
 import type { PackageRuleFormData } from "@/lib/validation";
 import {
-  Accommodation_v2,
   ACCOMMODATION_WITH_TRANSLATIONS_Result,
   AllowedVehicleCategory,
   Port,
@@ -50,6 +45,7 @@ import {
 } from "@fjordline/sanity-types";
 import { setSkipNextDraftWrite } from "@/lib/formSync";
 import { removeFieldArrayItem } from "@/lib/form/removeFieldArrayItem";
+import { Locale } from "@/types/locales";
 
 interface ReferenceData {
   ports: Port[];
@@ -113,7 +109,9 @@ export function AccommodationSection({
 
   // Convert accommodations to options for the searchable dropdown
   const accommodationOptions: Option[] = referenceData.accommodations
-    .filter((acc) => acc)
+    .filter((acc) =>
+      form.getValues("availableLanguages")?.includes(acc?.language as Locale)
+    )
     .map((acc) => ({
       label: acc?.title || "Untitled",
       value: acc?._id || "",
@@ -325,7 +323,6 @@ export function AccommodationSection({
                                         _ref !== selectedId &&
                                         !existingRefs.includes(_ref || "")
                                       ) {
-                                        setSkipNextDraftWrite();
                                         append({
                                           additonalCost: 0,
                                           accommodationType: {

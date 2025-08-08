@@ -1,3 +1,4 @@
+import { Locale } from "@/types/locales";
 import type { PackageRuleFormData } from "../validation";
 import { BundlePackageRules, PackageRule_v2 } from "@fjordline/sanity-types";
 
@@ -21,6 +22,7 @@ export function mapSanityDocToFormData(
 ): PackageRuleFormData {
   return {
     name: doc.name ?? "",
+    availableLanguages: (doc.availableLanguages as Locale[]) || [],
     description: doc.description ?? "",
     rules: doc.rules
       ? {

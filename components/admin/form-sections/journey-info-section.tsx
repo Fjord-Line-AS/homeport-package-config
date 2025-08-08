@@ -29,6 +29,8 @@ import {
   ShipProductCode,
 } from "@fjordline/sanity-types";
 import { SearchableSelect } from "@/components/ui/searchable-select";
+import { MultiSelect } from "@/components/ui/multi-select";
+import { Locale, Locales } from "@/types/locales";
 
 interface ReferenceData {
   ports: Port[];
@@ -44,6 +46,29 @@ interface JourneyInfoSectionProps {
   referenceData: ReferenceData;
 }
 
+const languageOptions = [
+  {
+    value: "nb",
+    label: "Norwegian (Bokmål)",
+    description: "🇳🇴 Norwegian language",
+  },
+  {
+    value: "da",
+    label: "Danish",
+    description: "🇩🇰 Danish language",
+  },
+  {
+    value: "en",
+    label: "English",
+    description: "🇬🇧 English language",
+  },
+  {
+    value: "de",
+    label: "German",
+    description: "🇩🇪 German language",
+  },
+];
+
 export function JourneyInfoSection({
   form,
   referenceData,
@@ -52,8 +77,9 @@ export function JourneyInfoSection({
     value: code._id,
     label: code.productName?.en || code.productName?.nb || "Unknown Product",
     description: `• Code: ${code.productCode}`,
-    code: code.productCode, // Added code field for product code
+    code: code.productCode,
   }));
+
   return (
     <div className="grid gap-6">
       <div className="grid gap-4 md:grid-cols-2">
@@ -114,6 +140,37 @@ export function JourneyInfoSection({
         )}
       />
 
+      <FormField
+        control={form.control}
+        name="availableLanguages"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel>Available Languages</FormLabel>
+            <FormControl>
+              <MultiSelect
+                options={languageOptions}
+                selected={field.value || []}
+                onChange={(selected: string[]) => {
+                  console.log("Selected languages:", field);
+                  form.setValue("availableLanguages", selected as Locales, {
+                    shouldDirty: true,
+                    shouldTouch: true,
+                    shouldValidate: true,
+                  });
+                }}
+                placeholder="Select available languages..."
+                searchPlaceholder="Search languages..."
+                emptyText="No languages found."
+              />
+            </FormControl>
+            <FormDescription>
+              Select which languages this package rule supports
+            </FormDescription>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+
       <div className="grid gap-4 md:grid-cols-2">
         <FormField
           control={form.control}
@@ -121,7 +178,7 @@ export function JourneyInfoSection({
           render={({ field }) => (
             <FormItem>
               <FormLabel>Journey Type</FormLabel>
-              <Select onValueChange={field.onChange} defaultValue={field.value}>
+              <Select onValueChange={field.onChange} value={field.value}>
                 <FormControl>
                   <SelectTrigger>
                     <SelectValue placeholder="Select journey type" />
@@ -167,7 +224,7 @@ export function JourneyInfoSection({
                 />
               </FormControl>
               <FormDescription>
-                Select the cabin type for pricing
+                Select the product code this rule is associated with
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -188,7 +245,6 @@ export function JourneyInfoSection({
                   min="0"
                   step="0.5"
                   placeholder="6"
-                  defaultValue={6}
                   {...field}
                   onChange={(e) =>
                     field.onChange(
@@ -216,7 +272,6 @@ export function JourneyInfoSection({
               <FormControl>
                 <Input
                   type="number"
-                  defaultValue={1}
                   min="0"
                   placeholder="1"
                   {...field}

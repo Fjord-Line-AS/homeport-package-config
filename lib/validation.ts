@@ -13,6 +13,7 @@ const sanityReferenceWithKeySchema = sanityReferenceSchema.extend({
 export const packageRuleSchema = z.object({
   name: z.string().min(1, "Name is required").max(100, "Name too long"),
   description: z.string().optional(),
+  availableLanguages: z.array(z.enum(["nb", "da", "en", "de"])),
   rules: z.object({
     packageCode: z.string(),
     journeyType: z

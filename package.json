@@ -15,7 +15,7 @@
     "generate:paths": "tsx scripts/zod/generateValidPathsFromZod.ts"
   },
   "dependencies": {
-    "@fjordline/sanity-types": "1.0.16656",
+    "@fjordline/sanity-types": "1.0.16678",
     "@hookform/resolvers": "^5.2.1",
     "@radix-ui/react-checkbox": "^1.3.2",
     "@radix-ui/react-collapsible": "^1.1.11",
