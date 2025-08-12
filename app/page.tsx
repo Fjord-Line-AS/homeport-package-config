@@ -9,6 +9,10 @@ import {
   Target,
   MapPin,
   Calendar,
+  Database,
+  FileText,
+  Layers,
+  GitBranch,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -19,9 +23,37 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { NewRuleButton } from "@/components/admin/package-rules/actions/NewRuleButton";
+import { Progress } from "@/components/ui/progress";
+import { getSanityStats } from "./actions/stats/getSanityStats";
 
-export default function Home() {
+function formatBytes(bytes: number): string {
+  if (bytes === 0) return "0 Bytes";
+  const k = 1024;
+  const sizes = ["Bytes", "KB", "MB", "GB"];
+  const i = Math.floor(Math.log(bytes) / Math.log(k));
+  return (
+    Number.parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + " " + sizes[i]
+  );
+}
+
+function formatNumber(num: number): string {
+  return new Intl.NumberFormat().format(num);
+}
+
+function getUsagePercentage(value: number, limit: number): number {
+  if (limit === 0) return 0;
+  return Math.min((value / limit) * 100, 100);
+}
+
+function getUsageColor(percentage: number): string {
+  if (percentage >= 90) return "text-red-600";
+  if (percentage >= 75) return "text-yellow-600";
+  return "text-green-600";
+}
+
+export default async function Home() {
+  const stats = await getSanityStats();
+
   return (
     <div className="min-h-screen bg-gradient-to-br from-brand-seashell-50 via-white to-brand-seashell-100">
       {/* Beautiful Hero Section */}
@@ -30,7 +62,7 @@ export default function Home() {
         <div className="absolute inset-0 bg-white/10" />
         <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_50%_50%,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[length:20px_20px] opacity-30" />
 
-        <div className="relative z-10 px-8 py-24">
+        <div className="relative z-10 px-8 py-18">
           <div className="max-w-4xl mx-auto text-center">
             <div className="flex items-center justify-center gap-4 mb-8">
               <div className="p-4 bg-white/10 backdrop-blur-sm rounded-2xl border border-white/20">
@@ -80,9 +112,139 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Features Section */}
+      {/* Dataset Usage Dashboard */}
       <div className="px-8 -mt-12 relative z-20">
         <div className="max-w-6xl mx-auto">
+          {/* Dataset Stats Overview */}
+          <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-brand-lg mb-8">
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-2 bg-brand-ocean-100 rounded-lg">
+                  <Database className="h-6 w-6 text-brand-ocean-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-2xl">
+                    Dataset Usage Overview
+                  </CardTitle>
+                  <CardDescription>
+                    Monitor your Sanity dataset limits and usage
+                  </CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                {/* Documents */}
+                <Card className="border-l-4 border-l-blue-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <FileText className="h-5 w-5 text-blue-600" />
+                      <span className="font-medium">Documents</span>
+                    </div>
+                    <div className="text-2xl font-bold text-brand-night-900 mb-1">
+                      {formatNumber(stats.documents.count.value)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      of {formatNumber(stats.documents.count.limit)} limit
+                    </div>
+                    <Progress
+                      value={getUsagePercentage(
+                        stats.documents.count.value,
+                        stats.documents.count.limit
+                      )}
+                      className="mt-2 h-2"
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Fields */}
+                <Card className="border-l-4 border-l-yellow-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Layers className="h-5 w-5 text-yellow-600" />
+                      <span className="font-medium">Fields</span>
+                    </div>
+                    <div className="text-2xl font-bold text-brand-night-900 mb-1">
+                      {formatNumber(stats.fields.count.value)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      of {formatNumber(stats.fields.count.limit)} limit
+                    </div>
+                    <Progress
+                      value={getUsagePercentage(
+                        stats.fields.count.value,
+                        stats.fields.count.limit
+                      )}
+                      className="mt-2 h-2"
+                    />
+                    <Badge
+                      variant="secondary"
+                      className={`mt-2 ${getUsageColor(
+                        getUsagePercentage(
+                          stats.fields.count.value,
+                          stats.fields.count.limit
+                        )
+                      )}`}
+                    >
+                      {getUsagePercentage(
+                        stats.fields.count.value,
+                        stats.fields.count.limit
+                      ).toFixed(1)}
+                      % used
+                    </Badge>
+                  </CardContent>
+                </Card>
+
+                {/* JSON Size */}
+                <Card className="border-l-4 border-l-green-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <Database className="h-5 w-5 text-green-600" />
+                      <span className="font-medium">JSON Size</span>
+                    </div>
+                    <div className="text-2xl font-bold text-brand-night-900 mb-1">
+                      {formatBytes(stats.documents.jsonSizeSum.value)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      of {formatBytes(stats.documents.jsonSizeSum.limit)} limit
+                    </div>
+                    <Progress
+                      value={getUsagePercentage(
+                        stats.documents.jsonSizeSum.value,
+                        stats.documents.jsonSizeSum.limit
+                      )}
+                      className="mt-2 h-2"
+                    />
+                  </CardContent>
+                </Card>
+
+                {/* Releases */}
+                <Card className="border-l-4 border-l-purple-500">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-2">
+                      <GitBranch className="h-5 w-5 text-purple-600" />
+                      <span className="font-medium">Releases</span>
+                    </div>
+                    <div className="text-2xl font-bold text-brand-night-900 mb-1">
+                      {formatNumber(stats.releases.count.value)}
+                    </div>
+                    <div className="text-sm text-muted-foreground">
+                      of {formatNumber(stats.releases.count.limit)} limit
+                    </div>
+                    <Progress
+                      value={getUsagePercentage(
+                        stats.releases.count.value,
+                        stats.releases.count.limit
+                      )}
+                      className="mt-2 h-2"
+                    />
+                  </CardContent>
+                </Card>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Features Section */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
             {/* Feature Cards */}
             <Card className="bg-white/90 backdrop-blur-sm border-0 shadow-brand-lg hover:shadow-brand-lg hover:scale-105 transition-all duration-300 group">
@@ -179,72 +341,16 @@ export default function Home() {
                     </Link>
                   </Button>
 
-                  <NewRuleButton />
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-
-          {/* Stats Section */}
-          <Card className="bg-white/95 backdrop-blur-sm border-0 shadow-brand-lg mt-16">
-            <CardContent className="p-8">
-              <div className="text-center mb-8">
-                <h2 className="text-3xl font-bold text-brand-night-900 mb-4">
-                  Powerful Package Management
-                </h2>
-                <p className="text-brand-night-600 text-lg max-w-2xl mx-auto">
-                  Everything you need to create and manage complex travel
-                  packages with precision and ease
-                </p>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-                <div className="text-center">
-                  <div className="p-3 bg-brand-red-100 rounded-xl w-fit mx-auto mb-3">
-                    <Package className="h-6 w-6 text-brand-red-600" />
-                  </div>
-                  <div className="text-2xl font-bold text-brand-night-900 mb-1">
-                    7
-                  </div>
-                  <div className="text-sm text-brand-night-600">
-                    Configuration Sections
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <div className="p-3 bg-brand-ocean-100 rounded-xl w-fit mx-auto mb-3">
-                    <Ship className="h-6 w-6 text-brand-ocean-600" />
-                  </div>
-                  <div className="text-2xl font-bold text-brand-night-900 mb-1">
-                    ∞
-                  </div>
-                  <div className="text-sm text-brand-night-600">
-                    Vessel Options
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <div className="p-3 bg-brand-glow-100 rounded-xl w-fit mx-auto mb-3">
-                    <Calendar className="h-6 w-6 text-brand-glow-600" />
-                  </div>
-                  <div className="text-2xl font-bold text-brand-night-900 mb-1">
-                    24/7
-                  </div>
-                  <div className="text-sm text-brand-night-600">
-                    Availability
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <div className="p-3 bg-brand-red-100 rounded-xl w-fit mx-auto mb-3">
-                    <Settings className="h-6 w-6 text-brand-red-600" />
-                  </div>
-                  <div className="text-2xl font-bold text-brand-night-900 mb-1">
-                    100%
-                  </div>
-                  <div className="text-sm text-brand-night-600">
-                    Customizable
-                  </div>
+                  <Button
+                    asChild
+                    variant="outline"
+                    className="border-brand-ocean-200 text-brand-ocean-700 hover:bg-brand-ocean-50 bg-transparent"
+                  >
+                    <Link href="/admin/package-rules/new">
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      Create New Rule
+                    </Link>
+                  </Button>
                 </div>
               </div>
             </CardContent>

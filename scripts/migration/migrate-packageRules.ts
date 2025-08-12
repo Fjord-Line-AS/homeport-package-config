@@ -1,11 +1,13 @@
 import { sanityFetch } from "@/lib/sanity/live";
 import { sanityApiClient } from "@/lib/sanity/client";
+import { Bundle_v2 } from "@fjordline/sanity-types";
+import { v4 as uuidv4 } from "uuid";
 
 const client = sanityApiClient;
 
 async function migrateBundleRules() {
   const sanityFetchConfig = {
-    query: `*[_type == "bundle_v2" && defined(bundlePackageRules)][0...1000] {
+    query: `*[_type == "bundle_v2" && defined(bundlePackageRules)] {
     _id,
     _rev,
     name,
@@ -13,14 +15,14 @@ async function migrateBundleRules() {
   }`,
   };
   const res = await sanityFetch(sanityFetchConfig);
-  const bundles = res.data;
+  const bundles: Bundle_v2[] = res.data;
 
   console.log(`Found ${bundles.length} bundles to migrate`);
 
   for (const bundle of bundles) {
     const { _id, name, bundlePackageRules } = bundle;
 
-    const ruleDocId = `packageRule.${_id.replace("bundle_v2.", "")}`;
+    const ruleDocId = uuidv4();
 
     // Create new package rule document
     await client.createIfNotExists({
@@ -31,17 +33,17 @@ async function migrateBundleRules() {
       rules: bundlePackageRules,
     });
 
-    // Patch original bundle to add reference
-    await client
-      .patch(_id)
-      .unset(["bundlePackageRules"])
-      .set({
-        packageRuleRef: {
-          _type: "reference",
-          _ref: ruleDocId,
-        },
-      })
-      .commit();
+    // // Patch original bundle to add reference
+    // await client
+    //   .patch(_id)
+    //   .unset(["bundlePackageRules"])
+    //   .set({
+    //     packageRuleRef: {
+    //       _type: "reference",
+    //       _ref: ruleDocId,
+    //     },
+    //   })
+    //   .commit();
 
     console.log(`Migrated ${_id} → ${ruleDocId}`);
   }
