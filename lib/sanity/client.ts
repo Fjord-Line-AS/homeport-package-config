@@ -5,10 +5,7 @@ const sharedConfig = {
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "",
   // SANITY_DATASET is used for the live client - comes from configmap
   // NEXT_PUBLIC_SANITY_DATASET comes from library in azure and used in build time
-  dataset:
-    process.env.SANITY_DATASET ||
-    process.env.NEXT_PUBLIC_SANITY_DATASET ||
-    "homeport",
+  dataset: process.env.SANITY_DATASET || process.env.NEXT_PUBLIC_SANITY_DATASET,
   useCdn: true,
 };
 

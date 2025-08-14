@@ -39,8 +39,6 @@ export default async function PackageRulesPage() {
       </div>
 
       <div className="px-8 -mt-4 relative z-20">
-        {/* Search Card */}
-
         {/* Rules List */}
         <Suspense
           fallback={

@@ -33,17 +33,17 @@ async function migrateBundleRules() {
       rules: bundlePackageRules,
     });
 
-    // // Patch original bundle to add reference
-    // await client
-    //   .patch(_id)
-    //   .unset(["bundlePackageRules"])
-    //   .set({
-    //     packageRuleRef: {
-    //       _type: "reference",
-    //       _ref: ruleDocId,
-    //     },
-    //   })
-    //   .commit();
+    // Patch original bundle to add reference
+    await client
+      .patch(_id)
+      // .unset(["bundlePackageRules"]) // Uncomment if you want to remove the old rules
+      .set({
+        packageRuleRef: {
+          _type: "reference",
+          _ref: ruleDocId,
+        },
+      })
+      .commit();
 
     console.log(`Migrated ${_id} → ${ruleDocId}`);
   }

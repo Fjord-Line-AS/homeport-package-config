@@ -1,6 +1,6 @@
 "use client";
 
-import { Package, Settings, Users, Ship } from "lucide-react";
+import { Package, Settings, Users, Ship, Home } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -18,6 +18,16 @@ import {
 } from "@/components/ui/sidebar";
 
 const navigation = [
+  {
+    title: "Dashboard",
+    items: [
+      {
+        title: "Overview",
+        href: "/",
+        icon: Home,
+      },
+    ],
+  },
   {
     title: "Package Management",
     items: [

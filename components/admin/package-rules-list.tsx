@@ -73,7 +73,7 @@ const PackageRulesListClient = ({ packages, publishedPackages }: Props) => {
       <div className="space-y-6">
         {packages.length > 0 ? (
           <AnimatePresence mode="popLayout">
-            <motion.div className="grid gap-6 pb-8" layout>
+            <motion.div className="grid gap-6 grid-cols-2 pb-8" layout>
               {packages
                 .filter((pkg) => {
                   const q = search.toLowerCase();

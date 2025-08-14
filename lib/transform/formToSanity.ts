@@ -12,6 +12,7 @@ export function mapFormDataToSanityDoc(
   return {
     name: formData.name,
     description: formData.description ?? "",
+    availableLanguages: formData.availableLanguages as Locale[],
     rules,
     _type: "packageRule_v2",
   };
